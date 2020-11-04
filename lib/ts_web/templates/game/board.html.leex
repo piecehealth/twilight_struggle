@@ -1,0 +1,31 @@
+<section class="section">
+  <div class="container">
+    <svg id="gameBoard" viewBox="0 0 2000 1000">
+      <style>
+        text {
+          alignment-baseline: middle;
+          text-anchor: middle;
+        }
+      </style>
+
+      <g>
+        <rect x="100" y="100" width="200" height="150" rx="15" class="us" />
+        <svg x="100" y="100" width="200" height="150">
+          <text x="50%" y="30%" class="big">U.S.A</text>
+        </svg>
+      </g>
+      <rect x="1400" y="100" width="200" height="150" rx="15" class="ussr" />
+      <svg x="1400" y="100" width="200" height="150">
+        <text x="50%" y="30%" class="big">U.S.S.R</text>
+      </svg>
+
+      <%= for {country, region, x, y, type} <- countries() do %>
+        <rect x="<%= x %>" y="<%= y %>" width="150" height="30" class="<%= type %>" />
+        <svg x="<%= x %>" y="<%= y %>" width="150" height="30">
+          <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>"><%= country %></text>
+        </svg>
+        <rect x="<%= x %>" y="<%= y + 30 %>" width="150" height="80" class="<%= region %>" />
+      <% end %>
+    </svg>
+  </div>
+</section>
