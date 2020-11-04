@@ -1,14 +1,11 @@
 defmodule TsWeb.GameView do
   use TsWeb, :view
 
-  @countries [
-    # Asia
-    {"n_korea", "asia", 1650, 150, "battle-ground"},
-    {"s_korea", "asia", 1650, 300, "battle-ground"},
-    {"philippines", "asia", 1650, 500, "normal"}
-  ]
-
-  def countries() do
-    @countries
+  def fill_region(region) do
+    case region do
+      "asia" -> "rgb(242, 164, 30)"
+      "southeast-asia" -> "url('#southeastEsia')"
+      _ -> ""
+    end
   end
 end

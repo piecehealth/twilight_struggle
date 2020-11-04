@@ -10,15 +10,18 @@ svg#gameBoard {
   width: 100%;
 
   .us {
-    fill: #268BD2;
+    fill: rgb(1, 155, 216);
+    stroke:#111111;
   }
 
   .ussr {
-    fill: #DC322F;
+    fill: rgb(216, 28, 40);
+    stroke:#111111;
   }
 
   .battle-ground {
     fill: rgb(88, 88, 166);
+    stroke:#111111;
   }
 
   .bg-text {
@@ -31,12 +34,27 @@ svg#gameBoard {
     fill: rgb(68, 63, 52);
   }
 
-  .asia {
-    fill: rgb(242, 164, 30);
+  .normal {
+    fill: rgb(250, 250, 200);
+    stroke:#111111;
   }
 
-  .normal {
-    fill: rgb(250, 250, 200)
+  .bg-sp {
+    fill: rgb(216, 28, 40);
+    stroke:#111111;
+  }
+
+  .normal-sp {
+    fill: rgb(250, 240, 93);
+    stroke:#111111;
+  }
+
+  .panel {
+    opacity: 0%;
+  }
+
+  .panel:hover {
+    opacity: 60%;
   }
 
   text.big {

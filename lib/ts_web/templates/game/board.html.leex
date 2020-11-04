@@ -7,6 +7,12 @@
           text-anchor: middle;
         }
       </style>
+      <defs>
+        <linearGradient id="southeastEsia" gradientTransform="rotate(46,1.65,1)">
+          <stop offset="50%"  stop-color="rgb(242, 164, 30)" />
+          <stop offset="50%" stop-color="rgb(255, 213, 5)" />
+        </linearGradient>
+      </defs>
 
       <g>
         <rect x="100" y="100" width="200" height="150" rx="15" class="us" />
@@ -19,12 +25,20 @@
         <text x="50%" y="30%" class="big">U.S.S.R</text>
       </svg>
 
-      <%= for {country, region, x, y, type} <- countries() do %>
+      <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.map() do %>
         <rect x="<%= x %>" y="<%= y %>" width="150" height="30" class="<%= type %>" />
         <svg x="<%= x %>" y="<%= y %>" width="150" height="30">
           <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>"><%= country %></text>
         </svg>
-        <rect x="<%= x %>" y="<%= y + 30 %>" width="150" height="80" class="<%= region %>" />
+        <rect x="<%= x + 120 %>" y="<%= y %>" width="30" height="30" class="<%= if type == "normal", do: "normal-sp", else: "bg-sp" %>" />
+        <svg x="<%= x + 120 %>" y="<%= y %>" width="30" height="30">
+          <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">
+            <%= stable_point %>
+          </text>
+        </svg>
+        <rect x="<%= x %>" y="<%= y + 30 %>" width="150" height="80" fill="<%= fill_region(region) %>" stroke="#111111"/>
+        <line x1="<%= x + 75 %>" y1="<%= y + 30 %>" x2="<%= x + 75 %>" y2="<%= y + 110 %>" stroke="#111111" stroke-dasharray="4" />
+        <rect x="<%= x %>" y="<%= y + 30 %>" width="75" height="40" class="panel" />
       <% end %>
     </svg>
   </div>
