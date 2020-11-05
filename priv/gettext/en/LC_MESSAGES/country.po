@@ -1,0 +1,44 @@
+msgid "n_korea"
+msgstr "N. Korea"
+
+msgid "s_korea"
+msgstr "S. Korea"
+
+msgid "japan"
+msgstr "Japan"
+
+msgid "philippines"
+msgstr "Philippines"
+
+msgid "taiwan"
+msgstr "Taiwan"
+
+msgid "indonesia"
+msgstr "Indonesia"
+
+msgid "australia"
+msgstr "Australia"
+
+msgid "malaysia"
+msgstr "Malaysia"
+
+msgid "vietnam"
+msgstr "Vietnam"
+
+msgid "thailand"
+msgstr "Thailand"
+
+msgid "laos_cambodia"
+msgstr "Laos/Cambodia"
+
+msgid "burma"
+msgstr "Burma"
+
+msgid "india"
+msgstr "India"
+
+msgid "pakistan"
+msgstr "Pakistan"
+
+msgid "afghanistan"
+msgstr "Afghanistan"

@@ -1,0 +1,5 @@
+msgid "usa"
+msgstr "U.S.A"
+
+msgid "ussr"
+msgstr "U.S.S.R"
