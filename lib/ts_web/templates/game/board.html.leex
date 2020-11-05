@@ -1,5 +1,5 @@
 <div class="container">
-  <svg id="gameBoard" viewBox="0 0 2500 1200">
+  <svg id="gameBoard" viewBox="0 0 2500 1500">
     <style>
       text {
         alignment-baseline: middle;
@@ -13,17 +13,16 @@
       </linearGradient>
     </defs>
 
-    <g>
-      <rect x="100" y="50" width="300" height="150" rx="15" class="us" />
-      <svg x="100" y="50" width="300" height="150">
-        <text x="50%" y="30%" class="big"><%= gettext("usa") %></text>
-      </svg>
-    </g>
+<!--
+    <rect x="100" y="50" width="300" height="150" rx="15" class="us" />
+    <svg x="100" y="50" width="300" height="150">
+      <text x="50%" y="30%" class="big"><%= gettext("usa") %></text>
+    </svg>
     <rect x="1000" y="50" width="300" height="150" rx="15" class="ussr" />
     <svg x="1000" y="50" width="300" height="150">
       <text x="50%" y="30%" class="big"><%= gettext("ussr") %></text>
     </svg>
-
+-->
     <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.map() do %>
       <rect x="<%= x %>" y="<%= y %>" width="120" height="20" class="<%= type %>" />
       <svg x="<%= x %>" y="<%= y %>" width="120" height="20">

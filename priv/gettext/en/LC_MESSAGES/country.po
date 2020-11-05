@@ -42,3 +42,30 @@ msgstr "Pakistan"
 
 msgid "afghanistan"
 msgstr "Afghanistan"
+
+msgid "iraq"
+msgstr "Iraq"
+
+msgid "israel"
+msgstr "Israel"
+
+msgid "gulf_states"
+msgstr "Gulf States"
+
+msgid "jordan"
+msgstr "Jordan"
+
+msgid "saudi_arabia"
+msgstr "Saudi Arabia"
+
+msgid "syria"
+msgstr "Syria"
+
+msgid "lebanon"
+msgstr "Lebanon"
+
+msgid "egypt"
+msgstr "Egypt"
+
+msgid "libya"
+msgstr "Libya"
