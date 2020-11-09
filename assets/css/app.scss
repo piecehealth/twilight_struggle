@@ -2,7 +2,7 @@
 @import "../node_modules/nprogress/nprogress.css";
 
 html {
-  // background-color: rgb(200, 200, 200);
+  background-color: rgb(210, 210, 205);
 }
 
 svg#gameBoard {
@@ -27,12 +27,27 @@ svg#gameBoard {
   .bg-text {
     font-weight: bolder;
     fill: rgb(254, 254, 254);
+    font-size: 0.35em;
   }
 
   .normal-text {
     font-weight: bolder;
+    font-size: 0.35em;
     fill: rgb(68, 63, 52);
   }
+
+  .bg-sp-text {
+    font-weight: bolder;
+    fill: rgb(254, 254, 254);
+    font-size: 0.45em;
+  }
+
+  .normal-sp-text {
+    font-weight: bolder;
+    font-size: 0.45em;
+    fill: rgb(68, 63, 52);
+  }
+
 
   .normal {
     fill: rgb(250, 250, 200);

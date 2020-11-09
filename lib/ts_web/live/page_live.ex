@@ -2,13 +2,8 @@ defmodule TsWeb.PageLive do
   use TsWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket) do
-    countries = %{
-      "n_korea" => 0,
-      "s_korea" => 0
-    }
-
-    {:ok, assign(socket, countries: countries)}
+  def mount(_params, session, socket) do
+    {:ok, assign_defaults(socket, session)}
   end
 
   @impl true

@@ -1,3 +1,15 @@
+msgid "ts"
+msgstr "Twilight Struggle"
+
+msgid "new_game"
+msgstr "New Game"
+
+msgid "join"
+msgstr "Join"
+
+msgid "import"
+msgstr "Import"
+
 msgid "usa"
 msgstr "U.S.A"
 

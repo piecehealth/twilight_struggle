@@ -43,6 +43,9 @@ msgstr "Pakistan"
 msgid "afghanistan"
 msgstr "Afghanistan"
 
+msgid "iran"
+msgstr "Iran"
+
 msgid "iraq"
 msgstr "Iraq"
 
@@ -69,3 +72,180 @@ msgstr "Egypt"
 
 msgid "libya"
 msgstr "Libya"
+
+msgid "cananda"
+msgstr "Cananda"
+
+msgid "turkey"
+msgstr "Turkey"
+
+msgid "uk"
+msgstr "U.K."
+
+msgid "greece"
+msgstr "Greece"
+
+msgid "bulgaria"
+msgstr "Bulgaria"
+
+msgid "yugoslavia"
+msgstr "Yugoslavia"
+
+msgid "italy"
+msgstr "Italy"
+
+msgid "romania"
+msgstr "Romania"
+
+msgid "hungray"
+msgstr "Hungray"
+
+msgid "austria"
+msgstr "Austria"
+
+msgid "czechoslovakia"
+msgstr "Czechoslovakia"
+
+msgid "poland"
+msgstr "Poland"
+
+msgid "finland"
+msgstr "Finland"
+
+msgid "sweden"
+msgstr "Sweden"
+
+msgid "norway"
+msgstr "Norway"
+
+msgid "denmark"
+msgstr "Denmark"
+
+msgid "e_germany"
+msgstr "E. Germany"
+
+msgid "w_germany"
+msgstr "W. Germany"
+
+msgid "benelux"
+msgstr "Benelux"
+
+msgid "france"
+msgstr "France"
+
+msgid "spain_portugal"
+msgstr "Spain/Portugal"
+
+msgid "mexico"
+msgstr "Mexico"
+
+msgid "guatemala"
+msgstr "Guatemala"
+
+msgid "cuba"
+msgstr "Cuba"
+
+msgid "ei_salvador"
+msgstr "EI salvador"
+
+msgid "honduras"
+msgstr "Honduras"
+
+msgid "nicaragua"
+msgstr "Nicaragua"
+
+msgid "haiti"
+msgstr "Haiti"
+
+msgid "dominican_rep"
+msgstr "Dominican Rep"
+
+msgid "costa_rica"
+msgstr "Costa Rica"
+
+msgid "panama"
+msgstr "Panama"
+
+msgid "venezuela"
+msgstr "Venezuela"
+
+msgid "colombia"
+msgstr "Colombia"
+
+msgid "ecuador"
+msgstr "Ecuador"
+
+msgid "peru"
+msgstr "Peru"
+
+msgid "brazil"
+msgstr "Brazil"
+
+msgid "bolivia"
+msgstr "Bolivia"
+
+msgid "chile"
+msgstr "Chile"
+
+msgid "paraguay"
+msgstr "Paraguay"
+
+msgid "uruguay"
+msgstr "Uruguay"
+
+msgid "argentina"
+msgstr "Argentina"
+
+msgid "morocco"
+msgstr "Morocco"
+
+msgid "algeria"
+msgstr "Algeria"
+
+msgid "tunisia"
+msgstr "Tunisia"
+
+msgid "west_africa_states"
+msgstr "West Africa States"
+
+msgid "saharan_states"
+msgstr "Saharan States"
+
+msgid "sudan"
+msgstr "Sudan"
+
+msgid "ivory_coast"
+msgstr "Ivory Coast"
+
+msgid "nigeria"
+msgstr "Nigeria"
+
+msgid "ethiopia"
+msgstr "Ethiopia"
+
+msgid "cameroon"
+msgstr "Cameroon"
+
+msgid "zaire"
+msgstr "Zaire"
+
+msgid "kenya"
+msgstr "Kenya"
+
+msgid "somalia"
+msgstr "Somalia"
+
+msgid "angola"
+msgstr "Angola"
+
+msgid "east_africa_states"
+msgstr "East Africa States"
+
+msgid "zimbabwe"
+msgstr "Zimbabwe"
+
+msgid "botswana"
+msgstr "Botswana"
+
+msgid "south_africa"
+msgstr "South Africa"

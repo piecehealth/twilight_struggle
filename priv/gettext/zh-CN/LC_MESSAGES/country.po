@@ -1,0 +1,251 @@
+msgid "n_korea"
+msgstr "朝鲜"
+
+msgid "s_korea"
+msgstr "韩国"
+
+msgid "japan"
+msgstr "日本"
+
+msgid "philippines"
+msgstr "菲律宾"
+
+msgid "taiwan"
+msgstr "台湾"
+
+msgid "indonesia"
+msgstr "印度尼西亚"
+
+msgid "australia"
+msgstr "澳大利亚"
+
+msgid "malaysia"
+msgstr "马来西亚"
+
+msgid "vietnam"
+msgstr "越南"
+
+msgid "thailand"
+msgstr "泰国"
+
+msgid "laos_cambodia"
+msgstr "老挝/柬埔寨"
+
+msgid "burma"
+msgstr "缅甸"
+
+msgid "india"
+msgstr "印度"
+
+msgid "pakistan"
+msgstr "巴基斯坦"
+
+msgid "afghanistan"
+msgstr "阿富汗"
+
+msgid "iran"
+msgstr "伊朗"
+
+msgid "iraq"
+msgstr "伊拉克"
+
+msgid "israel"
+msgstr "以色列"
+
+msgid "gulf_states"
+msgstr "海湾诸国"
+
+msgid "jordan"
+msgstr "约旦"
+
+msgid "saudi_arabia"
+msgstr "沙特阿拉伯"
+
+msgid "syria"
+msgstr "叙利亚"
+
+msgid "lebanon"
+msgstr "黎巴嫩"
+
+msgid "egypt"
+msgstr "埃及"
+
+msgid "libya"
+msgstr "利比亚"
+
+msgid "cananda"
+msgstr "加拿大"
+
+msgid "turkey"
+msgstr "土耳其"
+
+msgid "uk"
+msgstr "英国"
+
+msgid "greece"
+msgstr "希腊"
+
+msgid "bulgaria"
+msgstr "保加利亚"
+
+msgid "yugoslavia"
+msgstr "南斯拉夫"
+
+msgid "italy"
+msgstr "意大利"
+
+msgid "romania"
+msgstr "罗马尼亚"
+
+msgid "hungray"
+msgstr "匈牙利"
+
+msgid "austria"
+msgstr "奥地利"
+
+msgid "czechoslovakia"
+msgstr "捷克斯洛伐克"
+
+msgid "poland"
+msgstr "波兰"
+
+msgid "finland"
+msgstr "芬兰"
+
+msgid "sweden"
+msgstr "瑞典"
+
+msgid "norway"
+msgstr "挪威"
+
+msgid "denmark"
+msgstr "丹麦"
+
+msgid "e_germany"
+msgstr "东德"
+
+msgid "w_germany"
+msgstr "西德"
+
+msgid "benelux"
+msgstr "比荷卢经济联盟"
+
+msgid "france"
+msgstr "法国"
+
+msgid "spain_portugal"
+msgstr "西班牙/葡萄牙"
+
+msgid "mexico"
+msgstr "墨西哥"
+
+msgid "guatemala"
+msgstr "危地马拉"
+
+msgid "cuba"
+msgstr "古巴"
+
+msgid "ei_salvador"
+msgstr "萨尔瓦多"
+
+msgid "honduras"
+msgstr "洪都拉斯"
+
+msgid "nicaragua"
+msgstr "尼加拉瓜"
+
+msgid "haiti"
+msgstr "海地"
+
+msgid "dominican_rep"
+msgstr "多米尼加共和国"
+
+msgid "costa_rica"
+msgstr "哥斯达黎加"
+
+msgid "panama"
+msgstr "巴拿马"
+
+msgid "venezuela"
+msgstr "委内瑞拉"
+
+msgid "colombia"
+msgstr "哥伦比亚"
+
+msgid "ecuador"
+msgstr "厄瓜多尔"
+
+msgid "peru"
+msgstr "秘鲁"
+
+msgid "brazil"
+msgstr "巴西"
+
+msgid "bolivia"
+msgstr "玻利维亚"
+
+msgid "chile"
+msgstr "智利"
+
+msgid "paraguay"
+msgstr "巴拉圭"
+
+msgid "uruguay"
+msgstr "乌拉圭"
+
+msgid "argentina"
+msgstr "阿根廷"
+
+msgid "morocco"
+msgstr "摩洛哥"
+
+msgid "algeria"
+msgstr "阿尔及利亚"
+
+msgid "tunisia"
+msgstr "突尼斯"
+
+msgid "west_africa_states"
+msgstr "西非诸国"
+
+msgid "saharan_states"
+msgstr "撒哈拉国家公合体"
+
+msgid "sudan"
+msgstr "苏丹"
+
+msgid "ivory_coast"
+msgstr "科特迪瓦"
+
+msgid "nigeria"
+msgstr "尼日利亚"
+
+msgid "ethiopia"
+msgstr "埃塞尔比亚"
+
+msgid "cameroon"
+msgstr "喀麦隆"
+
+msgid "zaire"
+msgstr "扎伊尔"
+
+msgid "kenya"
+msgstr "肯尼亚"
+
+msgid "somalia"
+msgstr "索马里"
+
+msgid "angola"
+msgstr "安哥拉"
+
+msgid "east_africa_states"
+msgstr "非洲东部诸国"
+
+msgid "zimbabwe"
+msgstr "津巴布韦"
+
+msgid "botswana"
+msgstr "博茨瓦纳"
+
+msgid "south_africa"
+msgstr "南非"

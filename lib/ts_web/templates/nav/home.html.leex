@@ -1,0 +1,39 @@
+<header>
+  <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <div class="navbar-item">
+          <strong><%= gettext("ts") %></strong>
+        </div>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu" phx-hook="navBurger">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-start">
+          <%= link("English", to: "/locale/en", method: :put, class: "navbar-item") %>
+          <%= link("简体中文", to: "/locale/zh-CN", method: :put, class: "navbar-item") %>
+        </div>
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <button class="button is-primary open-modal" data-modal-id="update_name_modal">
+                <%= gettext("new_game") %>
+              </button>
+              <button class="button is-link">
+                <%= gettext("join") %>
+              </button>
+              </button>
+              <button class="button is-warning open-modal" data-modal-id="update_name_modal">
+                <%= gettext("import") %>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

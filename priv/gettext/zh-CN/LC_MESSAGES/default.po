@@ -1,0 +1,11 @@
+msgid "ts"
+msgstr "冷战热斗"
+
+msgid "new_game"
+msgstr "新建游戏"
+
+msgid "join"
+msgstr "加入"
+
+msgid "import"
+msgstr "导入"

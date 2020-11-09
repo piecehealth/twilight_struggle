@@ -18,6 +18,8 @@ defmodule TsWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    put "/locale/:locale", GameController, :locale
   end
 
   # Other scopes may use custom stacks.

@@ -18,8 +18,37 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 
+let liveHooks = {}
+
+liveHooks.navBurger = {
+  mounted() {
+    this.el.addEventListener("click", () => {
+      let target = this.el.dataset.target;
+      let $target = document.getElementById(target);
+      this.el.classList.toggle('is-active');
+      $target.classList.toggle('is-active');
+    })
+  }
+}
+
+liveHooks.closeModalButton = {
+  mounted() {
+    this.el.addEventListener("click", () => {
+      let alertBox = document.getElementById("alertBox")
+      let html = document.getElementsByTagName("html")[0]
+      html.classList.toggle("is-clipped", false)
+      alertBox.classList.toggle("is-active", false)
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: {_csrf_token: csrfToken},
+  hooks: liveHooks
+})
+
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())

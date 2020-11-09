@@ -1,5 +1,5 @@
 <div class="container">
-  <svg id="gameBoard" viewBox="0 0 2500 1500">
+  <svg id="gameBoard" viewBox="0 0 1100 700">
     <style>
       text {
         alignment-baseline: middle;
@@ -10,6 +10,10 @@
       <linearGradient id="southeastEsia" gradientTransform="rotate(46,1.65,1)">
         <stop offset="50%"  stop-color="rgb(242, 164, 30)" />
         <stop offset="50%" stop-color="rgb(255, 213, 5)" />
+      </linearGradient>
+      <linearGradient id="middleEurope" gradientTransform="rotate(46,1.65,1)">
+        <stop offset="50%"  stop-color="rgb(163, 134, 190)" />
+        <stop offset="50%" stop-color="rgb(187, 169, 211)" />
       </linearGradient>
     </defs>
 
@@ -24,21 +28,21 @@
     </svg>
 -->
     <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.map() do %>
-      <rect x="<%= x %>" y="<%= y %>" width="120" height="20" class="<%= type %>" />
-      <svg x="<%= x %>" y="<%= y %>" width="120" height="20">
+      <rect x="<%= x %>" y="<%= y %>" width="42" height="10" class="<%= type %>" />
+      <svg x="<%= x %>" y="<%= y %>" width="32" height="10">
         <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">
           <%= Gettext.dgettext(TsWeb.Gettext, "country", country) %>
         </text>
       </svg>
-      <rect x="<%= x + 100 %>" y="<%= y %>" width="20" height="20" class="<%= if type == "normal", do: "normal-sp", else: "bg-sp" %>" />
-      <svg x="<%= x + 100 %>" y="<%= y %>" width="20" height="20">
-        <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">
+      <rect x="<%= x + 32 %>" y="<%= y %>" width="10" height="10" class="<%= if type == "normal", do: "normal-sp", else: "bg-sp" %>" />
+      <svg x="<%= x + 32 %>" y="<%= y %>" width="10" height="10">
+        <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-sp-text", else: "bg-sp-text" %>">
           <%= stable_point %>
         </text>
       </svg>
-      <rect x="<%= x %>" y="<%= y + 20 %>" width="120" height="60" fill="<%= fill_region(region) %>" stroke="#111111"/>
-      <line x1="<%= x + 60 %>" y1="<%= y + 20 %>" x2="<%= x + 60 %>" y2="<%= y + 80 %>" stroke="#111111" stroke-dasharray="4" />
-      <rect x="<%= x %>" y="<%= y + 20 %>" width="60" height="30" class="panel" />
+      <rect x="<%= x %>" y="<%= y + 10 %>" width="42" height="18" fill="<%= fill_region(region) %>" stroke="#111111"/>
+      <line x1="<%= x + 21 %>" y1="<%= y + 10 %>" x2="<%= x + 21 %>" y2="<%= y + 28 %>" stroke="#111111" stroke-dasharray="2" />
+      <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="9" class="panel" />
     <% end %>
   </svg>
 </div>

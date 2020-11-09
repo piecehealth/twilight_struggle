@@ -47,6 +47,8 @@ defmodule TsWeb do
       use Phoenix.LiveView,
         layout: {TsWeb.LayoutView, "live.html"}
 
+      import TsWeb.LiveHelpers
+
       unquote(view_helpers())
     end
   end
