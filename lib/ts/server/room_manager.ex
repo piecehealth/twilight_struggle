@@ -25,7 +25,7 @@ defmodule Ts.Server.RoomManager do
   end
 
   @impl true
-  def hand_call({:new_room, user_id}, _from, state) do
+  def handle_call({:new_room, user_id}, _from, state) do
     {:replay, user_id, state}
   end
 
