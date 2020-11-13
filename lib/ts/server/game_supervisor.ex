@@ -8,7 +8,8 @@ defmodule Ts.Server.GameSupervisor do
   @impl true
   def init(:ok) do
     children = [
-      {Ts.Server.RoomManager, name: :room_manager},
+      Ts.Server.RoomManager,
+      Ts.Server.RoomAgent,
       {DynamicSupervisor, name: :room_guard, strategy: :one_for_one}
     ]
 
