@@ -18,6 +18,7 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 
+const html = document.getElementsByTagName("html")[0]
 let liveHooks = {}
 
 liveHooks.navBurger = {
@@ -34,10 +35,19 @@ liveHooks.navBurger = {
 liveHooks.closeModalButton = {
   mounted() {
     this.el.addEventListener("click", () => {
-      let alertBox = document.getElementById("alertBox")
-      let html = document.getElementsByTagName("html")[0]
+      let modal = this.el.closest(".modal")
       html.classList.toggle("is-clipped", false)
-      alertBox.classList.toggle("is-active", false)
+      modal.classList.toggle("is-active", false)
+    })
+  }
+}
+
+liveHooks.openModalButton = {
+  mounted() {
+    this.el.addEventListener("click", () => {
+      let modalId = this.el.dataset.modalId
+      html.classList.toggle("is-clipped", true)
+      document.getElementById(modalId).classList.toggle("is-active", true)
     })
   }
 }

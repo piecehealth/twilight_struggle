@@ -12,9 +12,10 @@ defmodule Ts.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Ts.PubSub},
       # Start the Endpoint (http/https)
-      TsWeb.Endpoint
+      TsWeb.Endpoint,
       # Start a worker by calling: Ts.Worker.start_link(arg)
       # {Ts.Worker, arg}
+      Ts.Server.GameSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

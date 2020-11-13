@@ -27,7 +27,7 @@
       <text x="50%" y="30%" class="big"><%= gettext("ussr") %></text>
     </svg>
 -->
-    <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.map() do %>
+    <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.Map.countries() do %>
       <rect x="<%= x %>" y="<%= y %>" width="42" height="10" class="<%= type %>" />
       <svg x="<%= x %>" y="<%= y %>" width="32" height="10">
         <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">

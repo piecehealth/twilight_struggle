@@ -9,3 +9,6 @@ msgstr "加入"
 
 msgid "import"
 msgstr "导入"
+
+msgid "close"
+msgstr "关闭"

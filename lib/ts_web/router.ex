@@ -19,6 +19,7 @@ defmodule TsWeb.Router do
 
     live "/", PageLive, :index
 
+    post "/games", GameController, :create
     put "/locale/:locale", GameController, :locale
   end
 

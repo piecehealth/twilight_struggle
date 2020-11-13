@@ -5,7 +5,7 @@
         <div class="navbar-item">
           <strong><%= gettext("ts") %></strong>
         </div>
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu" phx-hook="navBurger">
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu" id="navBurger" phx-hook="navBurger">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -20,14 +20,12 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <button class="button is-primary open-modal" data-modal-id="update_name_modal">
-                <%= gettext("new_game") %>
-              </button>
-              <button class="button is-link">
+              <%= button(gettext("new_game"), to: "/games", method: "post", class: "button is-primary") %>
+              <button class="button is-link" id="openJoinGameModal" data-modal-id="joinGameModal" phx-hook="openModalButton">
                 <%= gettext("join") %>
               </button>
               </button>
-              <button class="button is-warning open-modal" data-modal-id="update_name_modal">
+              <button class="button is-warning open-modal">
                 <%= gettext("import") %>
               </button>
             </div>
@@ -37,3 +35,23 @@
     </div>
   </nav>
 </header>
+
+<div class="modal" id="joinGameModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <%= f = form_for :new_game, "#", [phx_change: :validate, phx_submit: :save] %>
+      <header class="modal-card-head">
+        <p class="modal-card-title"><%= gettext("new_game") %></p>
+        <button class="delete" aria-label="close" id="closeNewGameButtonSmall" phx-hook="closeModalButton"></button>
+      </header>
+      <section class="modal-card-body">
+
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary">Save changes</button>
+        <button class="button" id="closeNewGameButtonMiddle" phx-hook="closeModalButton"><%= gettext("close") %></button>
+      </footer>
+    </form>
+  </div>
+  <button id="closeNewGameButton" class="modal-close is-large" aria-label="close" phx-hook="closeModalButton"></button>
+</div>

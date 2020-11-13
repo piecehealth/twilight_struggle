@@ -1,4 +1,4 @@
-defmodule Ts.Game do
+defmodule Ts.Game.Map do
   @bg "battle-ground"
   @normal "normal"
 
@@ -18,7 +18,7 @@ defmodule Ts.Game do
 
   @africa "africa"
 
-  @map %{
+  @countries %{
     # Asia
     "n_korea" => {@asia, @asia, 3, @bg, 960, 210},
     "s_korea" => {@asia, @asia, 3, @bg, 970, 245},
@@ -111,5 +111,5 @@ defmodule Ts.Game do
     "south_africa" => {@africa, @africa, 3, @bg, 505, 567}
   }
 
-  def map, do: @map
+  def countries, do: @countries
 end
