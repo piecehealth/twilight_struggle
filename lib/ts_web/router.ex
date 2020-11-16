@@ -17,7 +17,9 @@ defmodule TsWeb.Router do
   scope "/", TsWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", PageLive
+
+    live "/games/:id", GameLive
 
     post "/games", GameController, :create
     put "/locale/:locale", GameController, :locale

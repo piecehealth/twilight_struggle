@@ -1,8 +1,9 @@
 defmodule Ts.Server.RoomManager do
   use GenServer
 
-  alias Ts.Server.RoomAgent
   alias Ts.Server.Room
+  alias Ts.Server.RoomAgent
+
   # Client API
   def start_link(_) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -12,8 +13,8 @@ defmodule Ts.Server.RoomManager do
     GenServer.call(__MODULE__, {:new_room, user_id})
   end
 
-  def find_room(room_id) do
-    GenServer.call(__MODULE__, {:new_room, room_id})
+  def get_room(room_id, user_id) do
+    GenServer.call(__MODULE__, {:get_room, room_id, user_id})
   end
 
   # Server API
@@ -35,6 +36,12 @@ defmodule Ts.Server.RoomManager do
     })
 
     {:reply, room_id, :ok}
+  end
+
+  @impl true
+  def handle_call({:get_room, room_id, user_id}, _from, :ok) do
+    room_pid = RoomAgent.room_pid(room_id)
+    {:reply, Room.get_room(room_pid, user_id), :ok}
   end
 
   @impl true

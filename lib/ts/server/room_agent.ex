@@ -12,4 +12,9 @@ defmodule Ts.Server.RoomAgent do
       {Map.put(room_ids, room_id, pid), room_backup_status}
     end)
   end
+
+  def room_pid(room_id) do
+    {room_pids, _} = Agent.get(__MODULE__, & &1)
+    Map.get(room_pids, room_id)
+  end
 end
