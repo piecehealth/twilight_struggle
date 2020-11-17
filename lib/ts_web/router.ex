@@ -23,6 +23,7 @@ defmodule TsWeb.Router do
 
     post "/games", GameController, :create
     put "/locale/:locale", GameController, :locale
+    get "/register", GameController, :register
   end
 
   # Other scopes may use custom stacks.

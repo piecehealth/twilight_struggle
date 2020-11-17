@@ -22,9 +22,16 @@
             <span class="navbar-item">
               <b><%= gettext("room_id") %> <%= @room.room_id %></b>
             </span>
-            <span class="navbar-item">
-              <b><%= gettext("your_code") %> <%= @room.host_pwd %></b>
-            </span>
+            <%= if Room.host?(@room, @user_id) do %>
+              <span class="navbar-item">
+                <b><%= gettext("your_code") %> <%= @room.host_pwd %></b>
+              </span>
+            <% end %>
+            <%= if Room.guest?(@room, @user_id) do %>
+              <span class="navbar-item">
+                <b><%= gettext("your_code") %> <%= @room.guest_pwd %></b>
+              </span>
+            <% end %>
           </div>
         </div>
       </div>
@@ -66,3 +73,6 @@
   </div>
 </div>
 <% end %>
+
+<%= inspect(@room) %>
+<%= inspect(@game) %>
