@@ -12,3 +12,24 @@ msgstr "导入"
 
 msgid "close"
 msgstr "关闭"
+
+msgid "room_id"
+msgstr "房间号:"
+
+msgid "your_code"
+msgstr "你的代码:"
+
+msgid "awating_player"
+msgstr "等待玩家加入..."
+
+msgid "how_to_join"
+msgstr "告诉你朋友通过房间号<strong>%{room_id}</strong>加入"
+
+msgid "random"
+msgstr "随机"
+
+msgid "usa"
+msgstr "美国"
+
+msgid "ussr"
+msgstr "苏联"

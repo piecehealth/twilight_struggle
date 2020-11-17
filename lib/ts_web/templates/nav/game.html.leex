@@ -20,10 +20,10 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <span class="navbar-item">
-              <b>Room ID: <%= @room.room_id %></b>
+              <b><%= gettext("room_id") %> <%= @room.room_id %></b>
             </span>
             <span class="navbar-item">
-              <b>Your Code: <%= @room.host_pwd %></b>
+              <b><%= gettext("your_code") %> <%= @room.host_pwd %></b>
             </span>
           </div>
         </div>
@@ -31,3 +31,38 @@
     </div>
   </nav>
 </header>
+
+<%= if Room.host?(@room, @user_id) && @room.status == :new do %>
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <%= gettext("awating_player") %>
+    </header>
+    <section class="modal-card-body">
+      <p><%= raw gettext("how_to_join", room_id: @room.room_id) %><p>
+      <br />
+      <p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label"><%= gettext("choose_side") %></label>
+          </div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="select ">
+                <select phx-blur="choose_side">
+                  <%= Enum.map(["random", "usa", "ussr"], fn(side) -> %>
+                    <option value="<%= side %>" <%= if @room.host_superpower == side, do: "selected", else: "" %>>
+                      <%= Gettext.gettext(TsWeb.Gettext, side) %>
+                    </option>
+                  <% end) %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p>
+    </section>
+  </div>
+</div>
+<% end %>

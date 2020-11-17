@@ -22,9 +22,18 @@ defmodule Ts.Server.RoomManager do
     room_id
   end
 
-  def get_room(room_id, user_id) do
+  def get_room(room_id) do
     room_pid = RoomAgent.room_pid(room_id)
-    Room.get_room(room_pid, user_id)
+    {_room, _game} = Room.get_room(room_pid)
+  end
+
+  @doc """
+  Choose superpower for host player.
+  """
+  def update_side(room_id, side) do
+    room_pid = RoomAgent.room_pid(room_id)
+    {room, _game} = Room.update_side(room_pid, side)
+    room
   end
 
   # Server API

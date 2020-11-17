@@ -13,9 +13,26 @@ msgstr "Import"
 msgid "close"
 msgstr "Close"
 
+msgid "room_id"
+msgstr "Room ID:"
+
+msgid "your_code"
+msgstr "Your Code:"
+
+msgid "awating_player"
+msgstr "Awating player to join..."
+
+msgid "how_to_join"
+msgstr "Tell your friend to join this game by room ID <strong>%{room_id}</strong>"
+
+msgid "random"
+msgstr "Random"
 
 msgid "usa"
 msgstr "U.S.A"
 
 msgid "ussr"
 msgstr "U.S.S.R"
+
+msgid "choose_side"
+msgstr "Choose"

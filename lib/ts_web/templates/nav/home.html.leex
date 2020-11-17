@@ -39,7 +39,7 @@
 <div class="modal" id="joinGameModal">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <%= f = form_for :new_game, "#", [phx_change: :validate, phx_submit: :save] %>
+    <%= form_for :new_game, "#", [phx_change: :validate, phx_submit: :save] %>
       <header class="modal-card-head">
         <p class="modal-card-title"><%= gettext("new_game") %></p>
         <button class="delete" aria-label="close" id="closeNewGameButtonSmall" phx-hook="closeModalButton"></button>

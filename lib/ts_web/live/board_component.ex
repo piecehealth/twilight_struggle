@@ -1,5 +1,5 @@
-defmodule TsWeb.GameView do
-  use TsWeb, :view
+defmodule TsWeb.BoardComponent do
+  use TsWeb, :live_component
 
   def fill_region(region) do
     case region do
