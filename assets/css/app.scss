@@ -75,7 +75,43 @@ svg#gameBoard {
   text.big {
     font-size: 2em;
     font-weight: bolder;
-    fill: rgb(254, 254, 254)
+    fill: rgb(254, 254, 254);
+  }
+
+  rect.usa-control {
+    fill: rgb(1, 155, 216);
+  }
+
+  rect.usa-presence {
+    fill: rgb(254, 254, 254);
+  }
+
+  rect.ussr-control {
+    fill: rgb(214, 28, 40);
+  }
+
+  rect.ussr-presence {
+    fill: rgb(254, 254, 254);
+  }
+
+  text.usa-control {
+    font-size: 0.7em;
+    fill: rgb(254, 254, 254);
+  }
+
+  text.usa-presence {
+    font-size: 0.7em;
+    fill: rgb(1, 155, 216);
+  }
+
+  text.ussr-control {
+    font-size: 0.7em;
+    fill: rgb(254, 254, 254);
+  }
+
+  text.ussr-presence {
+    font-size: 0.7em;
+    fill: rgb(214, 28, 40);
   }
 }
 

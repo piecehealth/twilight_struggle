@@ -1,5 +1,5 @@
-defmodule TsWeb.BoardComponent do
-  use TsWeb, :live_component
+defmodule TsWeb.GameView do
+  use TsWeb, :view
 
   def fill_region(region) do
     case region do
@@ -13,6 +13,24 @@ defmodule TsWeb.BoardComponent do
       "middle-europe" -> "url('#middleEurope')"
       "southeast-asia" -> "url('#southeastEsia')"
       _ -> ""
+    end
+  end
+
+  def influence_class(usa_inf, ussr_inf, stable_point, side) do
+    case side do
+      "usa" ->
+        if usa_inf - ussr_inf >= stable_point do
+          "usa-control"
+        else
+          "usa-presence"
+        end
+
+      "ussr" ->
+        if ussr_inf - usa_inf >= stable_point do
+          "ussr-control"
+        else
+          "ussr-presence"
+        end
     end
   end
 end

@@ -13,9 +13,9 @@ defmodule TsWeb.GameController do
     redirect(set_user_id(conn), to: "/games/" <> room_id)
   end
 
-  def join(conn, _) do
-    # TODO
-  end
+  # def join(conn, _) do
+  #   # TODO
+  # end
 
   def locale(conn, %{"locale" => locale}) do
     prev_locale = get_session(conn, "locale")

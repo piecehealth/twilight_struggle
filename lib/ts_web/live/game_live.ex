@@ -13,16 +13,20 @@ defmodule TsWeb.GameLive do
         Phoenix.PubSub.subscribe(Ts.PubSub, "room:" <> room_id)
       end
 
-      {room, game} = Room.get_room(room_id)
+      case Room.get_room(room_id) do
+        {room, game} ->
+          {room, game} =
+            if Room.can_join?(room, user_id) do
+              Room.join(room_id, user_id)
+            else
+              {room, game}
+            end
 
-      {room, game} =
-        if Room.can_join?(room, user_id) do
-          Room.join(room_id, user_id)
-        else
-          {room, game}
-        end
+          {:ok, assign(socket, room: room, game: game)}
 
-      {:ok, assign(socket, room: room, game: game)}
+        _ ->
+          {:ok, push_redirect(socket, to: "/")}
+      end
     else
       {:ok, push_redirect(socket, to: "/register?room_id=" <> room_id)}
     end

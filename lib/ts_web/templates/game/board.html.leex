@@ -41,8 +41,33 @@
         </text>
       </svg>
       <rect x="<%= x %>" y="<%= y + 10 %>" width="42" height="18" fill="<%= fill_region(region) %>" stroke="#111111"/>
+
+      <%= if elem(@game.countries[country], 0) > 0 do %>
+        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>"></rect>
+        <svg x="<%= x %>" y="<%= y + 10 %>" width="21" height="18">
+          <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>">
+            <%= elem(@game.countries[country], 0) %>
+          </text>
+        </svg>
+      <% end %>
+
       <line x1="<%= x + 21 %>" y1="<%= y + 10 %>" x2="<%= x + 21 %>" y2="<%= y + 28 %>" stroke="#111111" stroke-dasharray="2" />
-      <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="9" class="panel" />
+
+      <%= if elem(@game.countries[country], 1) > 0 do %>
+        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>"></rect>
+        <svg x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18">
+          <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>">
+            <%= elem(@game.countries[country], 1) %>
+          </text>
+        </svg>
+      <% end %>
+
+      <%= if country in @game.can_add_usa_influence_countries do %>
+        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="500"/>
+      <% end %>
+      <%= if country in @game.can_add_ussr_influence_countries do %>
+        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="500"/>
+      <% end %>
     <% end %>
   </svg>
 </div>

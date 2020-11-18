@@ -20,7 +20,11 @@ defmodule Ts.Server.Room do
   end
 
   def get_room(room_id) do
-    GenServer.call(get_pid(room_id), {:get_room})
+    if get_pid(room_id) do
+      GenServer.call(get_pid(room_id), {:get_room})
+    else
+      :error
+    end
   end
 
   def update_side(room_id, host_superpower) do
