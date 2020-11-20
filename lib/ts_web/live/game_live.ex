@@ -2,6 +2,7 @@ defmodule TsWeb.GameLive do
   use TsWeb, :live_view
 
   alias Ts.Server.Room
+  alias Ts.Game.Game
 
   @impl true
   def mount(%{"id" => room_id}, session, socket) do
@@ -73,7 +74,21 @@ defmodule TsWeb.GameLive do
         },
         socket
       ) do
-    if topic == "room:" <> socket.assigns.room.room_id do
+    %{room: room, user_id: user_id} = socket.assigns
+
+    if topic == "room:" <> room.room_id do
+      game =
+        cond do
+          Room.usa_player?(room, socket.assigns.user_id) ->
+            Game.game_view_for(game, :usa)
+
+          Room.usa_player?(room, socket.assigns.user_id) ->
+            Game.game_view_for(game, :ussr)
+
+          true ->
+            game
+        end
+
       {:noreply, assign(socket, game: game)}
     else
       {:noreply, socket}

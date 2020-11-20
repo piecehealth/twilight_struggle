@@ -54,6 +54,18 @@ defmodule Ts.Server.Room do
     room.status == :new && room.host_id != user_id && is_nil(room.guest_id)
   end
 
+  def usa_player?(room, user_id) do
+    room.status != :new &&
+      ((room.host_id == user_id && room.host_superpower == "usa") ||
+         (room.guest == user_id && room.host_superpower == "ussr"))
+  end
+
+  def ussr_player?(room, user_id) do
+    room.status != :new &&
+      ((room.host_id == user_id && room.host_superpower == "ussr") ||
+         (room.guest == user_id && room.host_superpower == "usa"))
+  end
+
   @impl true
   def init({room_id, user_id}) do
     {:ok,
@@ -62,7 +74,7 @@ defmodule Ts.Server.Room do
         host_id: user_id,
         host_pwd: gen_pwd(),
         last_updated_at: Timex.now()
-      }, %Game{}}}
+      }, Game.blank()}}
   end
 
   @impl true

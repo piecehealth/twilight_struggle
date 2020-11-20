@@ -63,10 +63,10 @@
       <% end %>
 
       <%= if country in @game.can_add_usa_influence_countries do %>
-        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="500"/>
+        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
       <% end %>
       <%= if country in @game.can_add_ussr_influence_countries do %>
-        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="500"/>
+        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
       <% end %>
     <% end %>
   </svg>
