@@ -3,15 +3,7 @@ defmodule TsWeb.PageLive do
 
   @impl true
   def mount(_params, session, socket) do
-    countries = Ts.Game.Game.init_countries()
-
-    game = %{
-      countries: countries,
-      can_add_usa_influence_countries: MapSet.new(Map.keys(countries)),
-      can_add_ussr_influence_countries: MapSet.new(Map.keys(countries))
-    }
-
-    {:ok, assign_defaults(socket, session) |> assign(game: game)}
+    {:ok, socket |> assign_defaults(session) |> assign(game: Ts.Game.Game.blank())}
   end
 
   @impl true

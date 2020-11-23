@@ -1,14 +1,26 @@
 defmodule Ts.Game.Game do
   defstruct status: :not_start,
             countries: %{},
+            defcon_level: 5,
+            phazing_player: :ussr,
+            current_player: :ussr,
             turn: 1,
             action_round: 1,
+            card_phaze: nil,
+            card_choices: [],
             can_add_usa_influence_countries: MapSet.new(),
             can_add_ussr_influence_countries: MapSet.new(),
             can_remove_usa_influence_countries: MapSet.new(),
-            can_remove_ussr_influence_countries: MapSet.new()
+            can_remove_ussr_influence_countries: MapSet.new(),
+            cards_in_deck: [],
+            usa_cards: [],
+            ussr_cards: [],
+            player_cards: [],
+            logs: [],
+            buffs: MapSet.new()
 
   alias Ts.Game.Map, as: TsMap
+  alias Ts.Game.Card, as: Card
 
   def blank() do
     %__MODULE__{
@@ -36,14 +48,48 @@ defmodule Ts.Game.Game do
         "uk" => {5, 0}
       })
 
+    early_war_cards = Ts.Game.Card.early_war_cards()
+
     %__MODULE__{
       countries: countries,
-      status: :ussr_setup
+      status: :ussr_setup,
+      usa_cards: Enum.slice(early_war_cards, 0..7),
+      ussr_cards: Enum.slice(early_war_cards, 8..15),
+      cards_in_deck: Enum.slice(early_war_cards, 16..-1)
     }
   end
 
-  def game_view_for(game, _side) do
-    game
+  def view_for(game = %__MODULE__{status: :not_start}, _), do: game
+
+  def view_for(game, side) do
+    case side do
+      :usa ->
+        cards =
+          Enum.sort_by(
+            game.usa_cards,
+            fn card ->
+              {get_in(Card.cards(), [card, :op]), get_in(Card.cards(), [card, :belongs_to])}
+            end,
+            :desc
+          )
+
+        Map.merge(game, %{player_cards: cards})
+
+      :ussr ->
+        cards =
+          Enum.sort_by(
+            game.ussr_cards,
+            fn card ->
+              {get_in(Card.cards(), [card, :op]), get_in(Card.cards(), [card, :belongs_to])}
+            end,
+            :desc
+          )
+
+        Map.merge(game, %{player_cards: cards})
+
+      _ ->
+        game
+    end
   end
 
   def init_countries do

@@ -57,13 +57,13 @@ defmodule Ts.Server.Room do
   def usa_player?(room, user_id) do
     room.status != :new &&
       ((room.host_id == user_id && room.host_superpower == "usa") ||
-         (room.guest == user_id && room.host_superpower == "ussr"))
+         (room.guest_id == user_id && room.host_superpower == "ussr"))
   end
 
   def ussr_player?(room, user_id) do
     room.status != :new &&
       ((room.host_id == user_id && room.host_superpower == "ussr") ||
-         (room.guest == user_id && room.host_superpower == "usa"))
+         (room.guest_id == user_id && room.host_superpower == "usa"))
   end
 
   @impl true

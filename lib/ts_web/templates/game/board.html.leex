@@ -27,6 +27,7 @@
       <text x="50%" y="30%" class="big"><%= gettext("ussr") %></text>
     </svg>
 -->
+    <!-- Map -->
     <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.Map.countries() do %>
       <rect x="<%= x %>" y="<%= y %>" width="42" height="10" class="<%= type %>" />
       <svg x="<%= x %>" y="<%= y %>" width="32" height="10">
@@ -43,8 +44,8 @@
       <rect x="<%= x %>" y="<%= y + 10 %>" width="42" height="18" fill="<%= fill_region(region) %>" stroke="#111111"/>
 
       <%= if elem(@game.countries[country], 0) > 0 do %>
-        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>"></rect>
-        <svg x="<%= x %>" y="<%= y + 10 %>" width="21" height="18">
+        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>"></rect>
+        <svg x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14">
           <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>">
             <%= elem(@game.countries[country], 0) %>
           </text>
@@ -54,8 +55,8 @@
       <line x1="<%= x + 21 %>" y1="<%= y + 10 %>" x2="<%= x + 21 %>" y2="<%= y + 28 %>" stroke="#111111" stroke-dasharray="2" />
 
       <%= if elem(@game.countries[country], 1) > 0 do %>
-        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>"></rect>
-        <svg x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18">
+        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>"></rect>
+        <svg x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14">
           <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>">
             <%= elem(@game.countries[country], 1) %>
           </text>
@@ -63,11 +64,38 @@
       <% end %>
 
       <%= if country in @game.can_add_usa_influence_countries do %>
-        <rect x="<%= x %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
+        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
       <% end %>
       <%= if country in @game.can_add_ussr_influence_countries do %>
-        <rect x="<%= x + 21 %>" y="<%= y + 10 %>" width="21" height="18" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
+        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
       <% end %>
+    <% end %>
+    <!-- Cards -->
+    <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
+      <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
+      <svg phx-hook="card" id="card-<%= card %>">
+        <rect class="<%= op_class(belongs_to) %>" x="<%= 400 + idx * 65 %>" y="650" width="15" height="15"></rect>
+        <svg x="<%= 400 + idx * 65 %>" y="650" width="15" height="15">
+          <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
+            <%= op %>
+          </text>
+        </svg>
+        <rect class="<%= stage_class(stage) %>" x="<%= 415 + idx * 65 %>" y="650" width="45" height="15"></rect>
+        <svg x="<%= 415 + idx * 65 %>" y="650" width="45" height="15">
+          <text x="50%" y="50%" class="<%= stage_class(stage) %>">
+            <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
+          </text>
+        </svg>
+        <rect class="card" x="<%= 400 + idx * 65 %>" y="665" width="60" height="25">
+        </rect>
+        <svg x="<%= 400 + idx * 65 %>" y="665" width="60" height="25">
+          <text x="50%" y="50%" class="card-title">
+            <%= Gettext.dgettext(TsWeb.Gettext, "card", card) %>
+          </text>
+        </svg>
+        <rect class="desc" x="<%= 350 + idx * 65 %>" y="450" width="160" height="200">
+        </rect>
+      </svg>
     <% end %>
   </svg>
 </div>

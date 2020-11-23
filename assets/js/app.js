@@ -52,6 +52,30 @@ liveHooks.openModalButton = {
   }
 }
 
+liveHooks.card = {
+  mounted() {
+    let card = this.el.getElementsByClassName("card")[0]
+    let cardTitle = this.el.getElementsByClassName("card-title")[0]
+    let desc = this.el.getElementsByClassName("desc")[0]
+
+    card.addEventListener("mouseover", () => {
+      desc.style.display = "block"
+    })
+
+    cardTitle.addEventListener("mouseover", () => {
+      desc.style.display = "block"
+    })
+
+    card.addEventListener("mouseout", () => {
+      desc.style.display = "none"
+    })
+
+    cardTitle.addEventListener("mouseout", () => {
+      desc.style.display = "none"
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
 let liveSocket = new LiveSocket("/live", Socket, {

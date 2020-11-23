@@ -23,6 +23,13 @@ defmodule TsWeb.GameLive do
               {room, game}
             end
 
+          game =
+            cond do
+              Room.usa_player?(room, user_id) -> Game.view_for(game, :usa)
+              Room.ussr_player?(room, user_id) -> Game.view_for(game, :ussr)
+              true -> game
+            end
+
           {:ok, assign(socket, room: room, game: game)}
 
         _ ->
@@ -79,11 +86,11 @@ defmodule TsWeb.GameLive do
     if topic == "room:" <> room.room_id do
       game =
         cond do
-          Room.usa_player?(room, socket.assigns.user_id) ->
-            Game.game_view_for(game, :usa)
+          Room.usa_player?(room, user_id) ->
+            Game.view_for(game, :usa)
 
-          Room.usa_player?(room, socket.assigns.user_id) ->
-            Game.game_view_for(game, :ussr)
+          Room.usa_player?(room, user_id) ->
+            Game.view_for(game, :ussr)
 
           true ->
             game

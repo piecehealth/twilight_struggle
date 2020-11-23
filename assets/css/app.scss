@@ -113,6 +113,62 @@ svg#gameBoard {
     font-size: 0.7em;
     fill: rgb(214, 28, 40);
   }
+
+  .card {
+    fill: rgb(227, 245, 255);
+  }
+
+  rect.card-op-usa {
+    fill: rgb(246, 254, 246);
+    stroke:rgb(4, 142, 190);
+  }
+
+  rect.card-op-ussr {
+    fill: rgb(207, 35, 40);
+    stroke: rgb(227, 197, 20);
+  }
+
+  rect.card-op-neutral {
+    fill: rgb(250, 240, 93);
+    stroke:#121212;
+  }
+
+  text.card-op-usa {
+    fill: rgb(68, 63, 52);
+    font-size: 0.7em;
+  }
+
+  text.card-op-ussr {
+    fill: rgb(246, 254, 246);
+    font-size: 0.7em;
+  }
+
+  text.card-op-neutral {
+    fill: rgb(68, 63, 52);
+    font-size: 0.7em;
+  }
+
+  rect.card-stage-early {
+    fill: rgb(1, 171, 206);
+  }
+
+  text.card-stage-early {
+    fill: rgb(246, 254, 246);
+    font-size: 0.5em;
+  }
+
+  text.card-title {
+    font-size: 0.4em;
+  }
+
+  .desc {
+    display: none;
+    fill: rgb(227, 245, 255);
+  }
+
+  .card:hover + .desc{
+    display: block;
+  }
 }
 
 /* LiveView specific classes for your customizations */

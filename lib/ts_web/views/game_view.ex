@@ -33,4 +33,19 @@ defmodule TsWeb.GameView do
         end
     end
   end
+
+  def op_class(belongs_to) do
+    case belongs_to do
+      "usa" -> "card-op-usa"
+      "ussr" -> "card-op-ussr"
+      _ -> "card-op-neutral"
+    end
+  end
+
+  def stage_class(stage) do
+    case stage do
+      "early" -> "card-stage-early"
+      _ -> ""
+    end
+  end
 end
