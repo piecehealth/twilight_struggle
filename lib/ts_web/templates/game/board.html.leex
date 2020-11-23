@@ -90,7 +90,7 @@
         </rect>
         <svg x="<%= 400 + idx * 65 %>" y="665" width="60" height="25">
           <text x="50%" y="50%" class="card-title">
-            <%= Gettext.dgettext(TsWeb.Gettext, "card", card) %>
+            <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
           </text>
         </svg>
         <rect class="desc" x="<%= 350 + idx * 65 %>" y="450" width="160" height="200">

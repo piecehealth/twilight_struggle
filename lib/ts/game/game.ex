@@ -23,8 +23,12 @@ defmodule Ts.Game.Game do
   alias Ts.Game.Card, as: Card
 
   def blank() do
+    countries = init_countries()
+
     %__MODULE__{
-      countries: init_countries()
+      countries: init_countries(),
+      can_add_usa_influence_countries: MapSet.new(Map.keys(countries)),
+      can_add_ussr_influence_countries: MapSet.new(Map.keys(countries))
     }
   end
 
