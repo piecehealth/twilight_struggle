@@ -30,7 +30,12 @@ defmodule TsWeb.GameLive do
               true -> game
             end
 
-          {:ok, assign(socket, room: room, game: game)}
+          {:ok,
+           assign(socket,
+             room: room,
+             game: game,
+             influence_change_log: init_influence_change_log()
+           )}
 
         _ ->
           {:ok, push_redirect(socket, to: "/")}
@@ -57,31 +62,33 @@ defmodule TsWeb.GameLive do
   end
 
   @impl true
-  def handle_info(
-        %Phoenix.Socket.Broadcast{
-          event: "update_room",
-          topic: topic,
-          payload: room
-        },
-        socket
-      ) do
-    if topic == "room:" <> socket.assigns.room.room_id do
-      {:noreply, assign(socket, room: room)}
-    else
-      {:noreply, socket}
-    end
+  def handle_event("usa_plus_1", %{"country" => country}, socket) do
+    game = socket.assigns.game
+    {usa_influence, ussr_influence} = Map.get(game.countries, country)
+
+    game = put_in(game.countries[country], {usa_influence + 1, ussr_influence})
+    {:noreply, assign(socket, game: game)}
+  end
+
+  @impl true
+  def handle_event("ussr_plus_1", %{"country" => country}, socket) do
+    game = socket.assigns.game
+    {usa_influence, ussr_influence} = Map.get(game.countries, country)
+
+    game = put_in(game.countries[country], {usa_influence, ussr_influence + 1})
+    {:noreply, assign(socket, game: game)}
   end
 
   @impl true
   def handle_info(
         %Phoenix.Socket.Broadcast{
-          event: "update_game",
+          event: "update_room",
           topic: topic,
-          payload: game
+          payload: %{room: room, game: game}
         },
         socket
       ) do
-    %{room: room, user_id: user_id} = socket.assigns
+    %{user_id: user_id} = socket.assigns
 
     if topic == "room:" <> room.room_id do
       game =
@@ -96,9 +103,18 @@ defmodule TsWeb.GameLive do
             game
         end
 
-      {:noreply, assign(socket, game: game)}
+      {:noreply,
+       assign(socket,
+         room: room,
+         game: game,
+         influence_change_log: init_influence_change_log()
+       )}
     else
       {:noreply, socket}
     end
+  end
+
+  defp init_influence_change_log() do
+    %{}
   end
 end

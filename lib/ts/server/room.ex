@@ -33,8 +33,7 @@ defmodule Ts.Server.Room do
 
   def join(room_id, guest_id) do
     {room, game} = GenServer.call(get_pid(room_id), {:guest_join, guest_id})
-    notify_room_updates(room)
-    notify_game_updates(room.room_id, game)
+    notify_room_updates(room, game)
     {room, game}
   end
 
@@ -92,7 +91,19 @@ defmodule Ts.Server.Room do
   def handle_call({:guest_join, guest_id}, _from, {room, game}) do
     {room, game} =
       if can_join?(room, guest_id) do
-        {Map.merge(room, %{guest_id: guest_id, guest_pwd: gen_pwd(), status: :start}), Game.new()}
+        host_superpower =
+          if room.host_superpower == "random" do
+            Enum.random(["usa", "ussr"])
+          else
+            room.host_superpower
+          end
+
+        {Map.merge(room, %{
+           guest_id: guest_id,
+           guest_pwd: gen_pwd(),
+           status: :start,
+           host_superpower: host_superpower
+         }), Game.new()}
       else
         {room, game}
       end
@@ -100,15 +111,9 @@ defmodule Ts.Server.Room do
     {:reply, {room, game}, {room, game}}
   end
 
-  defp notify_room_updates(room) do
+  defp notify_room_updates(room, game) do
     Task.start(fn ->
-      TsWeb.Endpoint.broadcast("room:" <> room.room_id, "update_room", room)
-    end)
-  end
-
-  defp notify_game_updates(room_id, game) do
-    Task.start(fn ->
-      TsWeb.Endpoint.broadcast("room:" <> room_id, "update_game", game)
+      TsWeb.Endpoint.broadcast("room:" <> room.room_id, "update_room", %{room: room, game: game})
     end)
   end
 

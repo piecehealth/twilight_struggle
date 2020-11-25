@@ -1,3 +1,16 @@
+<%= if @game.status != :not_start do %>
+<div class="container">
+  <!-- Info -->
+  <div>
+    <%= case @game.status do %>
+    <% :ussr_setup -> %>
+      <span class="has-text-danger"><%= gettext("ussr_setup") %></span>
+    <% _ -> %>
+    <% end %>
+    <span><button class="button is-small is-primary">Logs</button></span>
+  </div>
+</div>
+<% end %>
 <div class="container">
   <svg id="gameBoard" viewBox="0 0 1100 700">
     <style>
@@ -74,26 +87,27 @@
     <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
       <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
       <svg phx-hook="card" id="card-<%= card %>">
-        <rect class="<%= op_class(belongs_to) %>" x="<%= 400 + idx * 65 %>" y="650" width="15" height="15"></rect>
-        <svg x="<%= 400 + idx * 65 %>" y="650" width="15" height="15">
+        <rect class="<%= op_class(belongs_to) %>" x="<%= 500 + idx * 65 %>" y="650" width="15" height="15"></rect>
+        <svg x="<%= 500 + idx * 65 %>" y="650" width="15" height="15">
           <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
             <%= op %>
           </text>
         </svg>
-        <rect class="<%= stage_class(stage) %>" x="<%= 415 + idx * 65 %>" y="650" width="45" height="15"></rect>
-        <svg x="<%= 415 + idx * 65 %>" y="650" width="45" height="15">
+        <rect class="<%= stage_class(stage) %>" x="<%= 515 + idx * 65 %>" y="650" width="45" height="15"></rect>
+        <svg x="<%= 515 + idx * 65 %>" y="650" width="45" height="15">
           <text x="50%" y="50%" class="<%= stage_class(stage) %>">
             <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
           </text>
         </svg>
-        <rect class="card" x="<%= 400 + idx * 65 %>" y="665" width="60" height="25">
+        <rect class="card" x="<%= 500 + idx * 65 %>" y="665" width="60" height="25">
         </rect>
-        <svg x="<%= 400 + idx * 65 %>" y="665" width="60" height="25">
+        <svg x="<%= 500 + idx * 65 %>" y="665" width="60" height="25">
           <text x="50%" y="50%" class="card-title">
             <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
           </text>
         </svg>
-        <rect class="desc" x="<%= 350 + idx * 65 %>" y="450" width="160" height="200">
+
+        <rect class="desc" x="900" y="400" width="160" height="200">
         </rect>
       </svg>
     <% end %>
