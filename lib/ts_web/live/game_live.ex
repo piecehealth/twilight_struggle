@@ -2,7 +2,7 @@ defmodule TsWeb.GameLive do
   use TsWeb, :live_view
 
   alias Ts.Server.Room
-  alias Ts.Game.Game
+  alias Ts.Game.View
 
   @impl true
   def mount(%{"id" => room_id}, session, socket) do
@@ -25,17 +25,12 @@ defmodule TsWeb.GameLive do
 
           game =
             cond do
-              Room.usa_player?(room, user_id) -> Game.view_for(game, :usa)
-              Room.ussr_player?(room, user_id) -> Game.view_for(game, :ussr)
+              Room.usa_player?(room, user_id) -> View.for(game, :usa)
+              Room.ussr_player?(room, user_id) -> View.for(game, :ussr)
               true -> game
             end
 
-          {:ok,
-           assign(socket,
-             room: room,
-             game: game,
-             influence_change_log: init_influence_change_log(room, game)
-           )}
+          {:ok, assign(socket, room: room, game: game)}
 
         _ ->
           {:ok, push_redirect(socket, to: "/")}
@@ -62,7 +57,7 @@ defmodule TsWeb.GameLive do
   end
 
   @impl true
-  def handle_event("usa_plus_1", %{"country" => country}, socket) do
+  def handle_event("update_usa_infl", %{"country" => country, "direction" => _}, socket) do
     game = socket.assigns.game
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
 
@@ -71,26 +66,15 @@ defmodule TsWeb.GameLive do
   end
 
   @impl true
-  def handle_event("ussr_plus_1", %{"country" => country}, socket) do
-    %{game: game, influence_change_log: influence_change_log} = socket.assigns
-    {usa_influence, ussr_influence} = Map.get(game.countries, country)
-    stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
+  def handle_event("update_ussr_infl", %{"country" => country, "direction" => _}, socket) do
+    game = socket.assigns.game
 
-    cost = if usa_influence - ussr_influence >= stable_point, do: 2, else: 1
-
-    point_remaining = influence_change_log.point_remaining - cost
-
-    game = put_in(game.countries[country], {usa_influence, ussr_influence + 1})
-
-    influence_change_log =
-      Map.merge(influence_change_log, %{
-        point_remaining: point_remaining,
-        stack: [{country, cost} | influence_change_log.stack],
-        can_modify_ussr_influence_countries:
-          update_influence_countries(game, point_remaining, :ussr)
-      })
-
-    {:noreply, assign(socket, game: game, influence_change_log: influence_change_log)}
+    if country in game.countries_can_place_ussr_influence do
+      game = View.update_influence(game, :ussr, country)
+      {:noreply, assign(socket, game: game)}
+    else
+      {:noreply, socket}
+    end
   end
 
   @impl true
@@ -108,63 +92,18 @@ defmodule TsWeb.GameLive do
       game =
         cond do
           Room.usa_player?(room, user_id) ->
-            Game.view_for(game, :usa)
+            View.for(game, :usa)
 
           Room.usa_player?(room, user_id) ->
-            Game.view_for(game, :ussr)
+            View.for(game, :ussr)
 
           true ->
             game
         end
 
-      {:noreply,
-       assign(socket,
-         room: room,
-         game: game,
-         influence_change_log: init_influence_change_log(room, game)
-       )}
+      {:noreply, assign(socket, room: room, game: game)}
     else
       {:noreply, socket}
     end
-  end
-
-  defp init_influence_change_log(_room, game) do
-    direction =
-      case game.status do
-        _ -> :add
-      end
-
-    %{
-      direction: direction,
-      point_limit: game.point_limit,
-      point_remaining: game.total_point,
-      stack: [],
-      can_modify_usa_influence_countries:
-        update_influence_countries(game, game.total_point, :usa),
-      can_modify_ussr_influence_countries:
-        update_influence_countries(game, game.total_point, :ussr)
-    }
-  end
-
-  defp update_influence_countries(_, 0, _) do
-    []
-  end
-
-  defp update_influence_countries(game, point_remaining, :usa) do
-    game.can_add_usa_influence_countries
-    |> Enum.filter(fn country ->
-      {usa_inf, ussr_inf} = Map.get(game.countries, country)
-      stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
-      !(ussr_inf - usa_inf >= stable_point && point_remaining < 2)
-    end)
-  end
-
-  defp update_influence_countries(game, point_remaining, :ussr) do
-    game.can_add_ussr_influence_countries
-    |> Enum.filter(fn country ->
-      {usa_inf, ussr_inf} = Map.get(game.countries, country)
-      stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
-      !(usa_inf - ussr_inf >= stable_point && point_remaining < 2)
-    end)
   end
 end

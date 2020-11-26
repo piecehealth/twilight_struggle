@@ -3,11 +3,11 @@ defmodule TsWeb.PageLive do
 
   @impl true
   def mount(_params, session, socket) do
-    {:ok, socket |> assign_defaults(session) |> assign(game: Ts.Game.Game.blank())}
+    {:ok, socket |> assign_defaults(session) |> assign(game: Ts.Game.View.blank())}
   end
 
   @impl true
-  def handle_event("usa_plus_1", %{"country" => country}, socket) do
+  def handle_event("update_usa_infl", %{"country" => country, "direction" => "increase"}, socket) do
     game = socket.assigns.game
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
 
@@ -16,7 +16,7 @@ defmodule TsWeb.PageLive do
   end
 
   @impl true
-  def handle_event("ussr_plus_1", %{"country" => country}, socket) do
+  def handle_event("update_ussr_infl", %{"country" => country, "direction" => "increase"}, socket) do
     game = socket.assigns.game
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
 

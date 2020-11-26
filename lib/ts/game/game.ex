@@ -6,33 +6,16 @@ defmodule Ts.Game.Game do
             current_player: :ussr,
             turn: 1,
             action_round: 1,
+            current_card: nil,
             card_phaze: nil,
             card_choices: [],
             cards_in_deck: [],
             usa_cards: [],
             ussr_cards: [],
-            player_cards: [],
             logs: [],
-            buffs: MapSet.new(),
-            can_add_usa_influence_countries: MapSet.new(),
-            can_add_ussr_influence_countries: MapSet.new(),
-            can_remove_usa_influence_countries: MapSet.new(),
-            can_remove_ussr_influence_countries: MapSet.new(),
-            total_point: 0,
-            point_limit: 0
+            buffs: MapSet.new()
 
   alias Ts.Game.Map, as: TsMap
-  alias Ts.Game.Card, as: Card
-
-  def blank() do
-    countries = init_countries()
-
-    %__MODULE__{
-      countries: init_countries(),
-      can_add_usa_influence_countries: MapSet.new(Map.keys(countries)),
-      can_add_ussr_influence_countries: MapSet.new(Map.keys(countries))
-    }
-  end
 
   def new() do
     countries =
@@ -63,70 +46,6 @@ defmodule Ts.Game.Game do
       ussr_cards: Enum.slice(early_war_cards, 8..15),
       cards_in_deck: Enum.slice(early_war_cards, 16..-1)
     }
-  end
-
-  def view_for(game = %__MODULE__{status: :not_start}, _), do: game
-
-  def view_for(game, side) do
-    case side do
-      :usa ->
-        order = ["neutral", "ussr", "usa"]
-
-        cards =
-          Enum.sort_by(
-            game.usa_cards,
-            fn card ->
-              %{op: op, belongs_to: belongs_to} = Map.get(Card.cards(), card)
-              {Enum.find_index(order, &(&1 == belongs_to)), op}
-            end,
-            :desc
-          )
-
-        Map.merge(game, %{player_cards: cards})
-
-      :ussr ->
-        order = ["neutral", "usa", "ussr"]
-
-        cards =
-          Enum.sort_by(
-            game.ussr_cards,
-            fn card ->
-              %{op: op, belongs_to: belongs_to} = Map.get(Card.cards(), card)
-              {Enum.find_index(order, &(&1 == belongs_to)), op}
-            end,
-            :desc
-          )
-
-        game = Map.put(game, :player_cards, cards)
-
-        case game.status do
-          :ussr_setup ->
-            east_europe_countries =
-              MapSet.new([
-                "bulgaria",
-                "yugoslavia",
-                "romania",
-                "hungray",
-                "austria",
-                "czechoslovakia",
-                "poland",
-                "finland",
-                "e_germany"
-              ])
-
-            Map.merge(game, %{
-              can_add_ussr_influence_countries: east_europe_countries,
-              total_point: 6,
-              point_limit: 6
-            })
-
-          _ ->
-            game
-        end
-
-      _ ->
-        game
-    end
   end
 
   def init_countries do

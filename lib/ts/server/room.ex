@@ -73,7 +73,7 @@ defmodule Ts.Server.Room do
         host_id: user_id,
         host_pwd: gen_pwd(),
         last_updated_at: Timex.now()
-      }, Game.blank()}}
+      }, Ts.Game.View.blank()}}
   end
 
   @impl true

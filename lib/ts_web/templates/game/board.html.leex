@@ -76,20 +76,12 @@
         </svg>
       <% end %>
 
-      <%= if @game.status != :not_start do %>
-        <%= if country in @influence_change_log.can_modify_usa_influence_countries do %>
-          <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
-        <% end %>
-        <%= if country in @influence_change_log.can_modify_ussr_influence_countries do %>
-          <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
-        <% end %>
-      <% else %>
-        <%= if country in @game.can_add_usa_influence_countries do %>
-          <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="usa_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
-        <% end %>
-        <%= if country in @game.can_add_ussr_influence_countries do %>
-          <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="ussr_plus_1" phx-value-country="<%= country %>" phx-throttle="300"/>
-        <% end %>
+
+      <%= if country in @game.countries_can_place_usa_influence do %>
+        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="update_usa_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
+      <% end %>
+      <%= if country in @game.countries_can_place_ussr_influence do %>
+        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="update_ussr_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
       <% end %>
     <% end %>
     <!-- Cards -->
