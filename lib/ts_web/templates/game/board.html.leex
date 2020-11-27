@@ -78,16 +78,16 @@
 
 
       <%= if country in @game.countries_can_place_usa_influence do %>
-        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="update_usa_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
+        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_usa_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
       <% end %>
       <%= if country in @game.countries_can_place_ussr_influence do %>
-        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="panel" phx-click="update_ussr_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
+        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_ussr_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
       <% end %>
     <% end %>
     <!-- Cards -->
     <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
       <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
-      <svg phx-hook="card" id="card-<%= card %>">
+      <svg phx-hook="card" id="card-<%= card %>" class="clickable">
         <rect class="<%= op_class(belongs_to) %>" x="<%= 500 + idx * 65 %>" y="650" width="15" height="15"></rect>
         <svg x="<%= 500 + idx * 65 %>" y="650" width="15" height="15">
           <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
@@ -110,6 +110,37 @@
 
         <rect class="desc" x="900" y="400" width="160" height="200">
         </rect>
+      </svg>
+    <% end %>
+    <!-- Action Area -->
+    <%= case @game.status do %>
+      <% :ussr_setup -> %>
+        <text x="760" y="560" class="ussr-presence"><%= gettext("ussr_setup") %></text>
+      <% _ -> %>
+    <% end %>
+
+    <%
+      button_width = 60
+      button_gap = 10
+      button_area_width = 300
+    %>
+    <%= for {action, idx} <- Enum.with_index(@game.user_actions) do %>
+      <rect
+        x="<%= 600 + (button_area_width - length(@game.user_actions) * button_width + (length(@game.user_actions) - 1) * button_gap) / 2 + (button_width + button_gap) * idx %>"
+        y="580" width="<%= button_width %>" height="20"
+        class="<%= op_class(which_side(@room, @user_id)) %>"
+      >
+      </rect>
+      <svg
+        x="<%= 600 + (button_area_width - length(@game.user_actions) * button_width + (length(@game.user_actions) - 1) * button_gap) / 2 + (button_width + button_gap) * idx %>"
+        y="580" width="<%= button_width %>" height="20"
+        phx-click="submit_action"
+        phx-value-action="<%= action %>"
+        class="clickable"
+      >
+        <text x="50%" y="50%" class="<%= op_class(which_side(@room, @user_id)) %>">
+          <%= action %>
+        </text>
       </svg>
     <% end %>
   </svg>

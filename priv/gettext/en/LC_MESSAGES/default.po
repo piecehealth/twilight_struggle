@@ -37,5 +37,11 @@ msgstr "U.S.S.R"
 msgid "choose_side"
 msgstr "Choose"
 
+msgid "undo"
+msgstr "Undo"
+
+msgid "commit"
+msgstr "Commit"
+
 msgid "ussr_setup"
 msgstr "USSR player place 6 Influence in Eastern Europe."

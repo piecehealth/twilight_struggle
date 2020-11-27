@@ -70,11 +70,17 @@ defmodule TsWeb.GameLive do
     game = socket.assigns.game
 
     if country in game.countries_can_place_ussr_influence do
-      game = View.update_influence(game, :ussr, country)
+      game = View.add_influence(game, :ussr, country)
       {:noreply, assign(socket, game: game)}
     else
       {:noreply, socket}
     end
+  end
+
+  @impl true
+  def handle_event("submit_action", %{"action" => action}, socket) do
+    IO.puts(action)
+    {:noreply, socket}
   end
 
   @impl true

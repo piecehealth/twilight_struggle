@@ -9,6 +9,10 @@ svg#gameBoard {
   min-width: 960px;
   width: 100%;
 
+  .clickable {
+    cursor: pointer;
+  }
+
   .us {
     fill: rgb(1, 155, 216);
     stroke:#121212;

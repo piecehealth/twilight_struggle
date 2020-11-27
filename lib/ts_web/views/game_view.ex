@@ -1,6 +1,8 @@
 defmodule TsWeb.GameView do
   use TsWeb, :view
 
+  alias Ts.Server.Room
+
   def fill_region(region) do
     case region do
       "asia" -> "rgb(242, 164, 30)"
@@ -46,6 +48,14 @@ defmodule TsWeb.GameView do
     case stage do
       "early" -> "card-stage-early"
       _ -> ""
+    end
+  end
+
+  def which_side(room, user_id) do
+    cond do
+      Room.usa_player?(room, user_id) -> "usa"
+      Room.ussr_player?(room, user_id) -> "ussr"
+      true -> ""
     end
   end
 end
