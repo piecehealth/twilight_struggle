@@ -11,6 +11,7 @@
   </div>
 </div>
 <% end %>
+
 <div class="container">
   <svg id="gameBoard" viewBox="0 0 1100 700">
     <style>
@@ -139,7 +140,7 @@
         class="clickable"
       >
         <text x="50%" y="50%" class="<%= op_class(which_side(@room, @user_id)) %>">
-          <%= action %>
+          <%= Gettext.gettext(TsWeb.Gettext, action) %>
         </text>
       </svg>
     <% end %>

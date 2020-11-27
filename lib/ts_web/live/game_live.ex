@@ -4,6 +4,9 @@ defmodule TsWeb.GameLive do
   alias Ts.Server.Room
   alias Ts.Game.View
 
+  @game_actoins MapSet.new(["commit"])
+  @view_actions MapSet.new(["undo"])
+
   @impl true
   def mount(%{"id" => room_id}, session, socket) do
     socket = assign_defaults(socket, session)
@@ -79,8 +82,18 @@ defmodule TsWeb.GameLive do
 
   @impl true
   def handle_event("submit_action", %{"action" => action}, socket) do
-    IO.puts(action)
-    {:noreply, socket}
+    cond do
+      action in @view_actions ->
+        game = apply(View, String.to_atom(action), [socket.assigns.game])
+        {:noreply, assign(socket, game: game)}
+
+      action in @game_actoins ->
+        # TODO Room.handle game
+        {:noreply, socket}
+
+      true ->
+        {:noreply, socket}
+    end
   end
 
   @impl true

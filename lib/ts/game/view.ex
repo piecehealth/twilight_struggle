@@ -55,6 +55,10 @@ defmodule Ts.Game.View do
     })
   end
 
+  @doc """
+  Place influence to one contry.
+  Could be triggered by event, or play card for placing influence.
+  """
   def add_influence(game, side, country, place_influence \\ false) when side in [:usa, :ussr] do
     stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
@@ -71,32 +75,12 @@ defmodule Ts.Game.View do
         1
       end
 
-    remaining_point = game.remaining_point - cost
+    game = Map.put(game, :remaining_point, game.remaining_point - cost)
 
-    influence_stack = [{country, cost}, game.influence_stack]
+    influence_stack = [{country, cost} | game.influence_stack]
 
-    {key, avaliable_countries} =
-      if side == :usa do
-        {:countries_can_place_usa_influence, game.usa_avaliable_countries}
-      else
-        {:countries_can_place_ussr_influence, game.ussr_avaliable_countries}
-      end
-
-    countries_can_place_influence =
-      if place_influence do
-        Enum.filter(avaliable_countries, fn country ->
-          {usa_inf, ussr_inf} = Map.get(game.countries, country)
-          stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
-
-          cond do
-            side == :usa && ussr_inf - usa_inf >= stable_point -> remaining_point >= 2
-            side == :ussr && usa_inf - ussr_inf >= stable_point -> remaining_point >= 2
-            true -> remaining_point >= 1
-          end
-        end)
-      else
-        if remaining_point == 0, do: @empty_set, else: game.ussr_avaliable_countries
-      end
+    {key, countries_can_place_influence} =
+      get_countries_can_place_influence(game, side, place_influence)
 
     user_actions =
       if MapSet.size(countries_can_place_influence) == 0 do
@@ -106,11 +90,59 @@ defmodule Ts.Game.View do
       end
 
     Map.merge(game, %{
-      remaining_point: remaining_point,
       influence_stack: influence_stack,
       user_actions: user_actions
     })
     |> Map.put(key, countries_can_place_influence)
+  end
+
+  def undo(game) do
+    [{country, cost} | influence_stack] = game.influence_stack
+
+    {usa_influence, ussr_influence} = Map.get(game.countries, country)
+
+    side =
+      cond do
+        game.status in MapSet.new([:ussr_setup]) -> :ussr
+        true -> :usa
+      end
+
+    place_influence =
+      cond do
+        game.status in MapSet.new([:ussr_setup]) -> false
+        true -> true
+      end
+
+    cond do
+      game.status in MapSet.new([:ussr_setup]) ->
+        game =
+          if side == :usa do
+            put_in(game.countries[country], {usa_influence - 1, ussr_influence})
+          else
+            put_in(game.countries[country], {usa_influence, ussr_influence - 1})
+          end
+
+        game = Map.put(game, :remaining_point, game.remaining_point + cost)
+
+        user_actions =
+          if game.remaining_point == game.total_point do
+            []
+          else
+            ["undo"]
+          end
+
+        {key, countries_can_place_influence} =
+          get_countries_can_place_influence(game, side, place_influence)
+
+        Map.merge(game, %{
+          influence_stack: influence_stack,
+          user_actions: user_actions
+        })
+        |> Map.put(key, countries_can_place_influence)
+
+      true ->
+        game
+    end
   end
 
   defp sorted_cards(game, side) when side in [:usa, :ussr] do
@@ -158,5 +190,34 @@ defmodule Ts.Game.View do
     case game.status do
       _ -> []
     end
+  end
+
+  defp get_countries_can_place_influence(game, side, place_influence) do
+    remaining_point = game.remaining_point
+
+    {key, avaliable_countries} =
+      if side == :usa do
+        {:countries_can_place_usa_influence, game.usa_avaliable_countries}
+      else
+        {:countries_can_place_ussr_influence, game.ussr_avaliable_countries}
+      end
+
+    countries_can_place_influence =
+      if place_influence do
+        Enum.filter(avaliable_countries, fn country ->
+          {usa_inf, ussr_inf} = Map.get(game.countries, country)
+          stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
+
+          cond do
+            side == :usa && ussr_inf - usa_inf >= stable_point -> remaining_point >= 2
+            side == :ussr && usa_inf - ussr_inf >= stable_point -> remaining_point >= 2
+            true -> remaining_point >= 1
+          end
+        end)
+      else
+        if remaining_point == 0, do: @empty_set, else: avaliable_countries
+      end
+
+    {key, countries_can_place_influence}
   end
 end
