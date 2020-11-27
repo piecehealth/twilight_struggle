@@ -1,5 +1,6 @@
 defmodule Ts.Game.View do
   alias Ts.Game.Card
+  alias Ts.Server.Room
 
   @empty_set MapSet.new([])
 
@@ -17,12 +18,31 @@ defmodule Ts.Game.View do
   end
 
   def for(game, :usa) do
+    {usa_avaliable_countries, total_point, max_point_limit} = get_usa_avaliable_countries(game)
+
+    ussr_avaliable_countries =
+      case game.status do
+        _ -> @empty_set
+      end
+
+    direction =
+      if game.status in [] do
+        :reduce
+      else
+        :increase
+      end
+
     Map.merge(game, %{
-      countries_can_place_usa_influence: @empty_set,
-      countries_can_place_ussr_influence: @empty_set,
+      usa_avaliable_countries: usa_avaliable_countries,
+      countries_can_place_usa_influence: usa_avaliable_countries,
+      countries_can_place_ussr_influence: ussr_avaliable_countries,
       player_cards: sorted_cards(game, :usa),
-      direction: :increase,
-      user_actions: []
+      total_point: total_point,
+      remaining_point: total_point,
+      max_point_limit: max_point_limit,
+      influence_stack: [],
+      direction: direction,
+      user_actions: get_user_actions(game, :usa)
     })
   end
 
@@ -62,7 +82,13 @@ defmodule Ts.Game.View do
   def add_influence(game, side, country, place_influence \\ false) when side in [:usa, :ussr] do
     stable_point = Map.get(Ts.Game.Map.countries(), country) |> elem(2)
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
-    game = put_in(game.countries[country], {usa_influence, ussr_influence + 1})
+
+    game =
+      if side == :usa do
+        put_in(game.countries[country], {usa_influence + 1, ussr_influence})
+      else
+        put_in(game.countries[country], {usa_influence, ussr_influence + 1})
+      end
 
     cost =
       if place_influence do
@@ -109,12 +135,12 @@ defmodule Ts.Game.View do
 
     place_influence =
       cond do
-        game.status in MapSet.new([:ussr_setup]) -> false
-        true -> true
+        game.status in MapSet.new([:place_influence]) -> true
+        true -> false
       end
 
     cond do
-      game.status in MapSet.new([:ussr_setup]) ->
+      game.status in MapSet.new([:ussr_setup, :usa_setup]) ->
         game =
           if side == :usa do
             put_in(game.countries[country], {usa_influence - 1, ussr_influence})
@@ -142,6 +168,29 @@ defmodule Ts.Game.View do
 
       true ->
         game
+    end
+  end
+
+  def commit(room_id, game) do
+    case game.status do
+      :ussr_setup ->
+        changes =
+          Enum.reduce(game.influence_stack, %{}, fn {country, _}, acc ->
+            Map.update(acc, country, 1, &(&1 + 1))
+          end)
+
+        Room.perform_game_update(room_id, :ussr_setup_done, changes)
+
+      :usa_setup ->
+        changes =
+          Enum.reduce(game.influence_stack, %{}, fn {country, _}, acc ->
+            Map.update(acc, country, 1, &(&1 + 1))
+          end)
+
+        Room.perform_game_update(room_id, :usa_setup_done, changes)
+
+      _ ->
+        nil
     end
   end
 
@@ -180,6 +229,34 @@ defmodule Ts.Game.View do
           ])
 
         {east_europe_countries, 6, 6}
+
+      _ ->
+        {@empty_set, 0, 0}
+    end
+  end
+
+  defp get_usa_avaliable_countries(game) do
+    case game.status do
+      :usa_setup ->
+        west_europe_countries =
+          MapSet.new([
+            "cananda",
+            "uk",
+            "greece",
+            "turkey",
+            "italy",
+            "austria",
+            "finland",
+            "sweden",
+            "norway",
+            "denmark",
+            "w_germany",
+            "benelux",
+            "france",
+            "spain_portugal"
+          ])
+
+        {west_europe_countries, 7, 7}
 
       _ ->
         {@empty_set, 0, 0}

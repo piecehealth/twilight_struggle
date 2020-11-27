@@ -2,10 +2,10 @@
 <div class="container">
   <!-- Info -->
   <div>
-    <%= case @game.status do %>
-    <% :ussr_setup -> %>
-      <span class="has-text-danger"><%= gettext("ussr_setup") %></span>
-    <% _ -> %>
+    <%= if @game.status in MapSet.new([:ussr_setup]) do %>
+      <span class="has-text-danger"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></span>
+    <% else %>
+      <span class="has-text-link"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></span>
     <% end %>
     <span><button class="button is-small is-primary">Logs</button></span>
   </div>
@@ -114,6 +114,12 @@
       </svg>
     <% end %>
     <!-- Action Area -->
+    <%= if @game.status in MapSet.new([:ussr_setup]) do %>
+      <text x="760" y="560" class="ussr-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
+    <% else %>
+      <text x="760" y="560" class="usa-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
+    <% end %>
+
     <%= case @game.status do %>
       <% :ussr_setup -> %>
         <text x="760" y="560" class="ussr-presence"><%= gettext("ussr_setup") %></text>

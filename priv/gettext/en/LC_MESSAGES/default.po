@@ -44,4 +44,7 @@ msgid "commit"
 msgstr "Commit"
 
 msgid "ussr_setup"
-msgstr "USSR player place 6 Influence in Eastern Europe."
+msgstr "USSR player place 6 Influence markers in Eastern Europe."
+
+msgid "usa_setup"
+msgstr "USA player place 7 Influence markers in Western Europe."

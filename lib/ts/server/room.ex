@@ -34,7 +34,11 @@ defmodule Ts.Server.Room do
   def join(room_id, guest_id) do
     {room, game} = GenServer.call(get_pid(room_id), {:guest_join, guest_id})
     notify_room_updates(room, game)
-    {room, game}
+  end
+
+  def perform_game_update(room_id, action, args \\ []) do
+    {room, game} = GenServer.call(get_pid(room_id), {:perform_game_update, action, args})
+    notify_room_updates(room, game)
   end
 
   def host?(room, user_id) do
@@ -111,10 +115,18 @@ defmodule Ts.Server.Room do
     {:reply, {room, game}, {room, game}}
   end
 
+  @impl true
+  def handle_call({:perform_game_update, action, args}, _from, {room, game}) do
+    game = apply(Game, action, [game, args])
+    {:reply, {room, game}, {room, game}}
+  end
+
   defp notify_room_updates(room, game) do
     Task.start(fn ->
       TsWeb.Endpoint.broadcast("room:" <> room.room_id, "update_room", %{room: room, game: game})
     end)
+
+    {room, game}
   end
 
   defp gen_pwd do
