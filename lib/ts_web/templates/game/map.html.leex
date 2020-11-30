@@ -1,0 +1,43 @@
+<%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.Map.countries() do %>
+  <rect x="<%= x %>" y="<%= y %>" width="42" height="10" class="<%= type %>" />
+  <svg x="<%= x %>" y="<%= y %>" width="32" height="10">
+    <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">
+      <%= Gettext.dgettext(TsWeb.Gettext, "country", country) %>
+    </text>
+  </svg>
+  <rect x="<%= x + 32 %>" y="<%= y %>" width="10" height="10" class="<%= if type == "normal", do: "normal-sp", else: "bg-sp" %>" />
+  <svg x="<%= x + 32 %>" y="<%= y %>" width="10" height="10">
+    <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-sp-text", else: "bg-sp-text" %>">
+      <%= stable_point %>
+    </text>
+  </svg>
+  <rect x="<%= x %>" y="<%= y + 10 %>" width="42" height="18" fill="<%= fill_region(region) %>" stroke="#111111"/>
+
+  <%= if elem(@game.countries[country], 0) > 0 do %>
+    <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>"></rect>
+    <svg x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14">
+      <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>">
+        <%= elem(@game.countries[country], 0) %>
+      </text>
+    </svg>
+  <% end %>
+
+  <line x1="<%= x + 21 %>" y1="<%= y + 10 %>" x2="<%= x + 21 %>" y2="<%= y + 28 %>" stroke="#111111" stroke-dasharray="2" />
+
+  <%= if elem(@game.countries[country], 1) > 0 do %>
+    <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>"></rect>
+    <svg x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14">
+      <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>">
+        <%= elem(@game.countries[country], 1) %>
+      </text>
+    </svg>
+  <% end %>
+
+
+  <%= if country in @game.countries_can_place_usa_influence do %>
+    <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_usa_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
+  <% end %>
+  <%= if country in @game.countries_can_place_ussr_influence do %>
+    <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_ussr_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
+  <% end %>
+<% end %>

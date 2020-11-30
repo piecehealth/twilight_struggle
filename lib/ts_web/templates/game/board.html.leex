@@ -1,19 +1,5 @@
-<%= if @game.status != :not_start do %>
 <div class="container">
-  <!-- Info -->
-  <div>
-    <%= if @game.status in MapSet.new([:ussr_setup]) do %>
-      <span class="has-text-danger"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></span>
-    <% else %>
-      <span class="has-text-link"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></span>
-    <% end %>
-    <span><button class="button is-small is-primary">Logs</button></span>
-  </div>
-</div>
-<% end %>
-
-<div class="container">
-  <svg id="gameBoard" viewBox="0 0 1100 700">
+  <svg id="gameBoard" viewBox="0 0 1100 750">
     <style>
       text {
         alignment-baseline: middle;
@@ -31,124 +17,9 @@
       </linearGradient>
     </defs>
 
-<!--
-    <rect x="100" y="50" width="300" height="150" rx="15" class="us" />
-    <svg x="100" y="50" width="300" height="150">
-      <text x="50%" y="30%" class="big"><%= gettext("usa") %></text>
-    </svg>
-    <rect x="1000" y="50" width="300" height="150" rx="15" class="ussr" />
-    <svg x="1000" y="50" width="300" height="150">
-      <text x="50%" y="30%" class="big"><%= gettext("ussr") %></text>
-    </svg>
--->
-    <!-- Map -->
-    <%= for {country, {_, region, stable_point, type, x, y}} <- Ts.Game.Map.countries() do %>
-      <rect x="<%= x %>" y="<%= y %>" width="42" height="10" class="<%= type %>" />
-      <svg x="<%= x %>" y="<%= y %>" width="32" height="10">
-        <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-text", else: "bg-text" %>">
-          <%= Gettext.dgettext(TsWeb.Gettext, "country", country) %>
-        </text>
-      </svg>
-      <rect x="<%= x + 32 %>" y="<%= y %>" width="10" height="10" class="<%= if type == "normal", do: "normal-sp", else: "bg-sp" %>" />
-      <svg x="<%= x + 32 %>" y="<%= y %>" width="10" height="10">
-        <text x="50%" y="50%" class="<%= if type == "normal", do: "normal-sp-text", else: "bg-sp-text" %>">
-          <%= stable_point %>
-        </text>
-      </svg>
-      <rect x="<%= x %>" y="<%= y + 10 %>" width="42" height="18" fill="<%= fill_region(region) %>" stroke="#111111"/>
-
-      <%= if elem(@game.countries[country], 0) > 0 do %>
-        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>"></rect>
-        <svg x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14">
-          <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "usa") %>">
-            <%= elem(@game.countries[country], 0) %>
-          </text>
-        </svg>
-      <% end %>
-
-      <line x1="<%= x + 21 %>" y1="<%= y + 10 %>" x2="<%= x + 21 %>" y2="<%= y + 28 %>" stroke="#111111" stroke-dasharray="2" />
-
-      <%= if elem(@game.countries[country], 1) > 0 do %>
-        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>"></rect>
-        <svg x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14">
-          <text x="50%" y="50%" class="<%= influence_class(elem(@game.countries[country], 0), elem(@game.countries[country], 1), stable_point, "ussr") %>">
-            <%= elem(@game.countries[country], 1) %>
-          </text>
-        </svg>
-      <% end %>
-
-
-      <%= if country in @game.countries_can_place_usa_influence do %>
-        <rect x="<%= x + 2 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_usa_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
-      <% end %>
-      <%= if country in @game.countries_can_place_ussr_influence do %>
-        <rect x="<%= x + 23 %>" y="<%= y + 12 %>" width="17" height="14" class="clickable panel" phx-click="update_ussr_infl" phx-value-country="<%= country %>" phx-value-direction="<%= @game.direction %>" phx-throttle="300"/>
-      <% end %>
-    <% end %>
-    <!-- Cards -->
-    <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
-      <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
-      <svg phx-hook="card" id="card-<%= card %>" class="clickable">
-        <rect class="<%= op_class(belongs_to) %>" x="<%= 500 + idx * 65 %>" y="650" width="15" height="15"></rect>
-        <svg x="<%= 500 + idx * 65 %>" y="650" width="15" height="15">
-          <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
-            <%= op %>
-          </text>
-        </svg>
-        <rect class="<%= stage_class(stage) %>" x="<%= 515 + idx * 65 %>" y="650" width="45" height="15"></rect>
-        <svg x="<%= 515 + idx * 65 %>" y="650" width="45" height="15">
-          <text x="50%" y="50%" class="<%= stage_class(stage) %>">
-            <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
-          </text>
-        </svg>
-        <rect class="card" x="<%= 500 + idx * 65 %>" y="665" width="60" height="25">
-        </rect>
-        <svg x="<%= 500 + idx * 65 %>" y="665" width="60" height="25">
-          <text x="50%" y="50%" class="card-title">
-            <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
-          </text>
-        </svg>
-
-        <rect class="desc" x="900" y="400" width="160" height="200">
-        </rect>
-      </svg>
-    <% end %>
-    <!-- Action Area -->
-    <%= if @game.status in MapSet.new([:ussr_setup]) do %>
-      <text x="760" y="560" class="ussr-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
-    <% else %>
-      <text x="760" y="560" class="usa-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
-    <% end %>
-
-    <%= case @game.status do %>
-      <% :ussr_setup -> %>
-        <text x="760" y="560" class="ussr-presence"><%= gettext("ussr_setup") %></text>
-      <% _ -> %>
-    <% end %>
-
-    <%
-      button_width = 60
-      button_gap = 10
-      button_area_width = 300
-    %>
-    <%= for {action, idx} <- Enum.with_index(@game.user_actions) do %>
-      <rect
-        x="<%= 600 + (button_area_width - length(@game.user_actions) * button_width + (length(@game.user_actions) - 1) * button_gap) / 2 + (button_width + button_gap) * idx %>"
-        y="580" width="<%= button_width %>" height="20"
-        class="<%= op_class(which_side(@room, @user_id)) %>"
-      >
-      </rect>
-      <svg
-        x="<%= 600 + (button_area_width - length(@game.user_actions) * button_width + (length(@game.user_actions) - 1) * button_gap) / 2 + (button_width + button_gap) * idx %>"
-        y="580" width="<%= button_width %>" height="20"
-        phx-click="submit_action"
-        phx-value-action="<%= action %>"
-        class="clickable"
-      >
-        <text x="50%" y="50%" class="<%= op_class(which_side(@room, @user_id)) %>">
-          <%= Gettext.gettext(TsWeb.Gettext, action) %>
-        </text>
-      </svg>
+    <%= render TsWeb.GameView, "map.html", assigns %>
+    <%= if @game.status != :not_start do %>
+      <%= render TsWeb.GameView, "action_area.html", assigns %>
     <% end %>
   </svg>
 </div>

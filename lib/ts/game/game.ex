@@ -3,7 +3,7 @@ defmodule Ts.Game.Game do
             countries: %{},
             defcon_level: 5,
             phazing_player: :ussr,
-            current_player: :ussr,
+            current_player: [:ussr],
             turn: 1,
             action_round: 1,
             current_card: nil,
@@ -64,7 +64,7 @@ defmodule Ts.Game.Game do
     Map.merge(game, %{
       status: :usa_setup,
       phazing_player: :usa,
-      current_player: :usa,
+      current_player: [:usa],
       logs: [{:ussr_setup, changes}]
     })
   end
@@ -78,6 +78,7 @@ defmodule Ts.Game.Game do
 
     Map.merge(game, %{
       status: :headline_phase,
+      current_player: [:usa, :ussr],
       logs: [{:usa_setup, changes} | game.logs]
     })
   end

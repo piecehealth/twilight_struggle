@@ -48,3 +48,6 @@ msgstr "USSR player place 6 Influence markers in Eastern Europe."
 
 msgid "usa_setup"
 msgstr "USA player place 7 Influence markers in Western Europe."
+
+msgid "headline_phase"
+msgstr "Headline Phase"

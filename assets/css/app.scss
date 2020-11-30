@@ -165,6 +165,10 @@ svg#gameBoard {
     font-size: 0.4em;
   }
 
+  text.bold-text {
+    font-weight: bolder;
+  }
+
   .desc {
     display: none;
     fill: rgb(227, 245, 255);
