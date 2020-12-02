@@ -13,7 +13,8 @@ defmodule Ts.Game.Game do
             usa_cards: [],
             ussr_cards: [],
             logs: [],
-            buffs: MapSet.new()
+            buffs: MapSet.new(),
+            memo: nil
 
   alias Ts.Game.Map, as: TsMap
 
@@ -81,5 +82,23 @@ defmodule Ts.Game.Game do
       current_player: [:usa, :ussr],
       logs: [{:usa_setup, changes} | game.logs]
     })
+  end
+
+  def play_headline_card(%Ts.Game.Game{memo: nil} = game, side, card)
+      when side in [:usa, :ussr] do
+    Map.put(game, :memo, Map.put(%{}, side, card))
+  end
+
+  def play_headline_card(game, side, card)
+      when side in [:usa, :ussr] do
+    opponent_side = if side == :usa, do: :ussr, else: :usa
+
+    if Map.get(game.memo, opponent_side) do
+      Map.merge(game, %{
+        status: :perform_headline_phase_1
+      })
+    else
+      put_in(game.memo[side], card)
+    end
   end
 end

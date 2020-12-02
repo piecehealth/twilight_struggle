@@ -51,3 +51,6 @@ msgstr "USA player place 7 Influence markers in Western Europe."
 
 msgid "headline_phase"
 msgstr "Headline Phase"
+
+msgid "play_headline_card"
+msgstr "Play Card"

@@ -12,12 +12,14 @@ defmodule Ts.Game.View do
       countries_can_place_usa_influence: MapSet.new(Map.keys(countries)),
       countries_can_place_ussr_influence: MapSet.new(Map.keys(countries)),
       player_cards: [],
+      cards_can_play: [],
       direction: :increase,
+      selected_card: nil,
       user_actions: []
     })
   end
 
-  def for(game, :usa) do
+  def for(game, current_view, :usa) do
     {usa_avaliable_countries, total_point, max_point_limit} = get_usa_avaliable_countries(game)
 
     ussr_avaliable_countries =
@@ -32,21 +34,24 @@ defmodule Ts.Game.View do
         :increase
       end
 
+    game = Map.put(game, :player_cards, sorted_cards(game, :usa))
+
     Map.merge(game, %{
       usa_avaliable_countries: usa_avaliable_countries,
       countries_can_place_usa_influence: usa_avaliable_countries,
       countries_can_place_ussr_influence: ussr_avaliable_countries,
-      player_cards: sorted_cards(game, :usa),
       total_point: total_point,
       remaining_point: total_point,
       max_point_limit: max_point_limit,
       influence_stack: [],
+      cards_can_play: get_cards_can_play(game, :usa),
       direction: direction,
-      user_actions: get_user_actions(game, :usa)
+      selected_card: get_selected_card(game, current_view, :usa),
+      user_actions: get_user_actions(game, current_view, :usa)
     })
   end
 
-  def for(game, :ussr) do
+  def for(game, current_view, :ussr) do
     {ussr_avaliable_countries, total_point, max_point_limit} = get_ussr_avaliable_countries(game)
 
     usa_avaliable_countries =
@@ -61,17 +66,20 @@ defmodule Ts.Game.View do
         :increase
       end
 
+    game = Map.put(game, :player_cards, sorted_cards(game, :ussr))
+
     Map.merge(game, %{
       ussr_avaliable_countries: ussr_avaliable_countries,
       countries_can_place_usa_influence: usa_avaliable_countries,
       countries_can_place_ussr_influence: ussr_avaliable_countries,
-      player_cards: sorted_cards(game, :ussr),
       total_point: total_point,
       remaining_point: total_point,
       max_point_limit: max_point_limit,
       influence_stack: [],
+      cards_can_play: get_cards_can_play(game, :ussr),
       direction: direction,
-      user_actions: get_user_actions(game, :ussr)
+      selected_card: get_selected_card(game, current_view, :ussr),
+      user_actions: get_user_actions(game, current_view, :ussr)
     })
   end
 
@@ -122,7 +130,7 @@ defmodule Ts.Game.View do
     |> Map.put(key, countries_can_place_influence)
   end
 
-  def undo(game) do
+  def undo(game, _) do
     [{country, cost} | influence_stack] = game.influence_stack
 
     {usa_influence, ussr_influence} = Map.get(game.countries, country)
@@ -171,7 +179,7 @@ defmodule Ts.Game.View do
     end
   end
 
-  def commit(room_id, game) do
+  def commit(room_id, game, _) do
     case game.status do
       :ussr_setup ->
         changes =
@@ -179,7 +187,7 @@ defmodule Ts.Game.View do
             Map.update(acc, country, 1, &(&1 + 1))
           end)
 
-        Room.perform_game_update(room_id, :ussr_setup_done, changes)
+        Room.perform_game_update(room_id, :ussr_setup_done, [changes])
 
       :usa_setup ->
         changes =
@@ -187,11 +195,15 @@ defmodule Ts.Game.View do
             Map.update(acc, country, 1, &(&1 + 1))
           end)
 
-        Room.perform_game_update(room_id, :usa_setup_done, changes)
+        Room.perform_game_update(room_id, :usa_setup_done, [changes])
 
       _ ->
         nil
     end
+  end
+
+  def play_headline_card(room_id, game, side) do
+    Room.perform_game_update(room_id, :play_headline_card, [side, game.selected_card])
   end
 
   defp sorted_cards(game, side) when side in [:usa, :ussr] do
@@ -263,9 +275,21 @@ defmodule Ts.Game.View do
     end
   end
 
-  defp get_user_actions(game, side) when side in [:usa, :ussr] do
+  defp get_user_actions(game, current_view, side) when side in [:usa, :ussr] do
     case game.status do
-      _ -> []
+      :headline_phase ->
+        if Map.get(current_view, :user_actions) == [] do
+          []
+        else
+          cond do
+            game.memo && Map.get(game.memo, side) -> []
+            current_view.status != :headline_phase -> []
+            true -> Map.get(current_view, :user_actions) || []
+          end
+        end
+
+      _ ->
+        []
     end
   end
 
@@ -296,5 +320,30 @@ defmodule Ts.Game.View do
       end
 
     {key, countries_can_place_influence}
+  end
+
+  defp get_cards_can_play(game, side) when side in [:usa, :ussr] do
+    case game.status do
+      :headline_phase -> game.player_cards
+      _ -> []
+    end
+  end
+
+  defp get_selected_card(game, current_view, side) when side in [:usa, :ussr] do
+    case game.status do
+      :headline_phase ->
+        if Map.get(current_view, :selected_card) do
+          if Map.get(game.memo, side) do
+            nil
+          else
+            current_view.selected_card
+          end
+        else
+          nil
+        end
+
+      _ ->
+        nil
+    end
   end
 end

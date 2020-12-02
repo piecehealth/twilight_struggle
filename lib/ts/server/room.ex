@@ -117,7 +117,7 @@ defmodule Ts.Server.Room do
 
   @impl true
   def handle_call({:perform_game_update, action, args}, _from, {room, game}) do
-    game = apply(Game, action, [game, args])
+    game = apply(Game, action, [game] ++ args)
     {:reply, {room, game}, {room, game}}
   end
 

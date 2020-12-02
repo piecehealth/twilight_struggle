@@ -1,21 +1,23 @@
+<!-- Cards -->
 <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
   <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
-  <svg phx-hook="card" id="card-<%= card %>" class="clickable">
-    <rect class="<%= op_class(belongs_to) %>" x="<%= 500 + idx * 65 %>" y="670" width="15" height="15"></rect>
-    <svg x="<%= 500 + idx * 65 %>" y="670" width="15" height="15">
+  <% y_pos = if card == @game.selected_card, do: 660, else: 670 %>
+  <svg phx-hook="card" id="card-<%= card %>" class="clickable" <%= if card in @game.cards_can_play, do: raw(~s(phx-click="attempt_play_card" phx-value-card="#{card}")), else: "" %>>
+    <rect class="<%= op_class(belongs_to) %>" x="<%= 500 + idx * 65 %>" y="<%= y_pos %>" width="15" height="15"></rect>
+    <svg x="<%= 500 + idx * 65 %>" y="<%= y_pos %>" width="15" height="15">
       <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
         <%= op %>
       </text>
     </svg>
-    <rect class="<%= stage_class(stage) %>" x="<%= 515 + idx * 65 %>" y="670" width="45" height="15"></rect>
-    <svg x="<%= 515 + idx * 65 %>" y="670" width="45" height="15">
+    <rect class="<%= stage_class(stage) %>" x="<%= 515 + idx * 65 %>" y="<%= y_pos %>" width="45" height="15"></rect>
+    <svg x="<%= 515 + idx * 65 %>" y="<%= y_pos %>" width="45" height="15">
       <text x="50%" y="50%" class="<%= stage_class(stage) %>">
         <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
       </text>
     </svg>
-    <rect class="card" x="<%= 500 + idx * 65 %>" y="685" width="60" height="25">
+    <rect class="card" x="<%= 500 + idx * 65 %>" y="<%= y_pos + 15 %>" width="60" height="25">
     </rect>
-    <svg x="<%= 500 + idx * 65 %>" y="685" width="60" height="25">
+    <svg x="<%= 500 + idx * 65 %>" y="<%= y_pos + 15 %>" width="60" height="25">
       <text x="50%" y="50%" class="card-title">
         <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
       </text>
