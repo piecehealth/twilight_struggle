@@ -168,6 +168,16 @@ defmodule Ts.Game.Card do
       is_asterisk: false,
       is_score: false,
       event: Ts.Game.Events.DuckAndCover
+    },
+    # 23
+    "marshall_plan" => %{
+      title: "marshall_plan",
+      belongs_to: @usa,
+      stage: @early,
+      op: 4,
+      is_asterisk: true,
+      is_score: false,
+      event: Ts.Game.Events.MarshallPlan
     }
   }
 

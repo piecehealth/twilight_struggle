@@ -2,6 +2,7 @@ defmodule TsWeb.GameView do
   use TsWeb, :view
 
   alias Ts.Server.Room
+  alias Ts.Game.Card
 
   def fill_region(region) do
     case region do

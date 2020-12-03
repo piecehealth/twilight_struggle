@@ -32,6 +32,16 @@
                 <b><%= gettext("your_code") %> <%= @room.guest_pwd %></b>
               </span>
             <% end %>
+            <%= if Room.usa_player?(@room, @user_id) do %>
+              <span class="navbar-item has-text-info">
+                <b><%= gettext("usa") %></b>
+              </span>
+            <% end %>
+            <%= if Room.ussr_player?(@room, @user_id) do %>
+              <span class="navbar-item has-text-danger">
+                <b><%= gettext("ussr") %></b>
+              </span>
+            <% end %>
           </div>
         </div>
       </div>

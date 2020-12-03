@@ -324,8 +324,11 @@ defmodule Ts.Game.View do
 
   defp get_cards_can_play(game, side) when side in [:usa, :ussr] do
     case game.status do
-      :headline_phase -> game.player_cards
-      _ -> []
+      :headline_phase ->
+        game.player_cards
+
+      _ ->
+        []
     end
   end
 

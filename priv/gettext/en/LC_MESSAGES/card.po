@@ -96,3 +96,6 @@ msgstr "Olympic Games"
 
 msgid "olympic_games_desc"
 msgstr "olympic_games_desc"
+
+msgid "marshall_plan"
+msgstr "Marshall Plan"

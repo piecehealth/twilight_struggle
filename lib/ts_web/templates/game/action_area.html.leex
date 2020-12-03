@@ -30,9 +30,9 @@
 <!-- Action Area -->
 <%= if length(@game.current_player) == 1 do %>
   <%= if [:usa] == @game.current_player do %>
-    <text x="760" y="600" class="usa-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
+    <text x="760" y="600" class="usa-presence bold-text"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
   <% else %>
-    <text x="760" y="600" class="ussr-presence"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
+    <text x="760" y="600" class="ussr-presence bold-text"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
   <% end %>
 <% else %>
   <%= cond do %>
@@ -44,7 +44,23 @@
       <text x="760" y="600" class="ussr-presence bold-text"><%= Gettext.gettext(TsWeb.Gettext, Atom.to_string(@game.status)) %></text>
   <% end %>
 <% end %>
+<%= case @game.status do %>
+  <% :perform_headline_phase_1 -> %>
+    <text x="760" y="620" class="info">
+      USA: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.usa) %>(<%= Map.get(Card.cards, @game.memo.usa).op %>)
 
+      USSR: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.ussr) %>(<%= Map.get(Card.cards, @game.memo.ussr).op %>)
+    </text>
+  <% _ -> %>
+<% end %>
+
+<%= if @game.current_card do %>
+  <%= if [:usa] == @game.current_player do %>
+    <text x="760" y="580" class="usa-presence bold-text"><%= gettext("implement_event", %{side: gettext("usa"), event: Gettext.dgettext(TsWeb.Gettext, "card", @game.current_card)}) %></text>
+  <% else %>
+    <text x="760" y="580" class="ussr-presence bold-text"><%= gettext("implement_event", %{side: gettext("ussr"), event: Gettext.dgettext(TsWeb.Gettext, "card", @game.current_card)}) %></text>
+  <% end %>
+<% end %>
 
 <%
   button_width = 60

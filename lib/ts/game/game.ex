@@ -17,6 +17,7 @@ defmodule Ts.Game.Game do
             memo: nil
 
   alias Ts.Game.Map, as: TsMap
+  alias Ts.Game.Card
 
   def new() do
     countries =
@@ -94,8 +95,37 @@ defmodule Ts.Game.Game do
     opponent_side = if side == :usa, do: :ussr, else: :usa
 
     if Map.get(game.memo, opponent_side) do
+      game = put_in(game.memo[side], card)
+      %{usa: usa_card_id, ussr: ussr_card_id} = game.memo
+
+      usa_card = Map.get(Card.cards(), usa_card_id)
+      ussr_card = Map.get(Card.cards(), ussr_card_id)
+
+      {phazing_player, current_player, current_card} =
+        if usa_card.op >= ussr_card.op do
+          card_player =
+            if usa_card.belongs_to == "neutral",
+              do: :usa,
+              else: String.to_atom(usa_card.belongs_to)
+
+          {:usa, card_player, usa_card.title}
+        else
+          card_player =
+            if ussr_card.belongs_to == "neutral",
+              do: :ussr,
+              else: String.to_atom(ussr_card.belongs_to)
+
+          {:ussr, card_player, ussr_card.title}
+        end
+
       Map.merge(game, %{
-        status: :perform_headline_phase_1
+        status: :perform_headline_phase_1,
+        phazing_player: phazing_player,
+        current_player: [current_player],
+        usa_cards: List.delete(game.usa_cards, game.memo.usa),
+        ussr_cards: List.delete(game.ussr_cards, game.memo.ussr),
+        current_card: current_card,
+        logs: [{:headline_phase, game.memo} | game.logs]
       })
     else
       put_in(game.memo[side], card)

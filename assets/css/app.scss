@@ -177,6 +177,10 @@ svg#gameBoard {
   .card:hover + .desc{
     display: block;
   }
+
+  text.info {
+    font-size: 0.7em;
+  }
 }
 
 /* LiveView specific classes for your customizations */
