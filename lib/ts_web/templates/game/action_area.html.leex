@@ -127,7 +127,7 @@
 <% end %>
 <%= case @game.status do %>
   <% :perform_headline_phase_1 -> %>
-    <text x="760" y="620" class="info">
+    <text x="760" y="560" class="info">
       <%= gettext("usa") %>: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.usa) %>(<%= Map.get(Card.cards, @game.memo.usa).op %>)
 
       <%= gettext("ussr") %>: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.ussr) %>(<%= Map.get(Card.cards, @game.memo.ussr).op %>)

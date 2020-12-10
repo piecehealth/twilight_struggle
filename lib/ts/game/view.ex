@@ -113,6 +113,8 @@ defmodule Ts.Game.View do
 
     influence_stack = [{country, cost} | game.influence_stack]
 
+    game = Map.put(game, :influence_stack, influence_stack)
+
     {key, countries_can_place_influence} =
       get_countries_can_place_influence(game, side, place_influence)
 
@@ -124,7 +126,6 @@ defmodule Ts.Game.View do
       end
 
     Map.merge(game, %{
-      influence_stack: influence_stack,
       user_actions: user_actions
     })
     |> Map.put(key, countries_can_place_influence)
@@ -148,7 +149,7 @@ defmodule Ts.Game.View do
       end
 
     cond do
-      game.status in MapSet.new([:ussr_setup, :usa_setup]) ->
+      game.status in MapSet.new([:ussr_setup, :usa_setup, :perform_headline_phase_1]) ->
         game =
           if side == :usa do
             put_in(game.countries[country], {usa_influence - 1, ussr_influence})
@@ -248,30 +249,33 @@ defmodule Ts.Game.View do
   end
 
   defp get_usa_avaliable_countries(game) do
+    west_europe_countries =
+      MapSet.new([
+        "cananda",
+        "uk",
+        "greece",
+        "turkey",
+        "italy",
+        "austria",
+        "finland",
+        "sweden",
+        "norway",
+        "denmark",
+        "w_germany",
+        "benelux",
+        "france",
+        "spain_portugal"
+      ])
+
     case game.status do
       :usa_setup ->
-        west_europe_countries =
-          MapSet.new([
-            "cananda",
-            "uk",
-            "greece",
-            "turkey",
-            "italy",
-            "austria",
-            "finland",
-            "sweden",
-            "norway",
-            "denmark",
-            "w_germany",
-            "benelux",
-            "france",
-            "spain_portugal"
-          ])
-
         {west_europe_countries, 7, 7}
 
       _ ->
-        {@empty_set, 0, 0}
+        case game.current_card do
+          "marshall_plan" -> {west_europe_countries, 7, 1}
+          _ -> {@empty_set, 0, 0}
+        end
     end
   end
 
@@ -293,7 +297,11 @@ defmodule Ts.Game.View do
     end
   end
 
-  defp get_countries_can_place_influence(game, side, place_influence) do
+  defp get_countries_can_place_influence(
+         %{max_point_limit: max_point_limit, influence_stack: influence_stack} = game,
+         side,
+         place_influence
+       ) do
     remaining_point = game.remaining_point
 
     {key, avaliable_countries} =
@@ -316,7 +324,20 @@ defmodule Ts.Game.View do
           end
         end)
       else
-        if remaining_point == 0, do: @empty_set, else: avaliable_countries
+        if remaining_point == 0 do
+          @empty_set
+        else
+          influenc_counter =
+            Enum.reduce(influence_stack, %{}, fn {country, _}, counter ->
+              current_infl = Map.get(counter, country, 0)
+              Map.put(counter, country, current_infl + 1)
+            end)
+
+          Enum.filter(avaliable_countries, fn country ->
+            Map.get(influenc_counter, country, 0) < max_point_limit
+          end)
+          |> MapSet.new()
+        end
       end
 
     {key, countries_can_place_influence}

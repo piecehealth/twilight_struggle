@@ -108,25 +108,28 @@ defmodule Ts.Game.Game do
               do: :usa,
               else: String.to_atom(usa_card.belongs_to)
 
-          {:usa, card_player, usa_card.title}
+          {:usa, card_player, usa_card}
         else
           card_player =
             if ussr_card.belongs_to == "neutral",
               do: :ussr,
               else: String.to_atom(ussr_card.belongs_to)
 
-          {:ussr, card_player, ussr_card.title}
+          {:ussr, card_player, ussr_card}
         end
 
-      Map.merge(game, %{
-        status: :perform_headline_phase_1,
-        phazing_player: phazing_player,
-        current_player: [current_player],
-        usa_cards: List.delete(game.usa_cards, game.memo.usa),
-        ussr_cards: List.delete(game.ussr_cards, game.memo.ussr),
-        current_card: current_card,
-        logs: [{:headline_phase, game.memo} | game.logs]
-      })
+      game =
+        Map.merge(game, %{
+          status: :perform_headline_phase_1,
+          phazing_player: phazing_player,
+          current_player: [current_player],
+          usa_cards: List.delete(game.usa_cards, game.memo.usa),
+          ussr_cards: List.delete(game.ussr_cards, game.memo.ussr),
+          current_card: current_card.title,
+          logs: [{:headline_phase, game.memo} | game.logs]
+        })
+
+      apply(current_card.event, :implement, [game])
     else
       put_in(game.memo[side], card)
     end
