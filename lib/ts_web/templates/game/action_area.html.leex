@@ -1,3 +1,57 @@
+<%= if @game.current_card do %>
+  <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, @game.current_card) %>
+  <svg phx-hook="card" id="current_card">
+    <rect class="<%= op_class(belongs_to) %>" x="10" y="10" width="15" height="15"></rect>
+    <svg x="10" y="10" width="15" height="15">
+      <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
+        <%= op %>
+      </text>
+    </svg>
+    <rect class="<%= stage_class(stage) %>" x="25" y="10" width="45" height="15"></rect>
+    <svg x="25" y="10" width="45" height="15">
+      <text x="50%" y="50%" class="<%= stage_class(stage) %>">
+        <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
+      </text>
+    </svg>
+    <rect class="card" x="10" y="25" width="60" height="25"></rect>
+    <svg x="10" y="25" width="60" height="25">
+      <text x="50%" y="50%" class="card-title">
+        <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
+      </text>
+    </svg>
+
+    <svg class="desc">
+      <rect class="<%= op_class(belongs_to) %>" x="80" y="10" width="30" height="30"></rect>
+      <svg x="80" y="10" width="30" height="30">
+        <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
+          <%= op %>
+        </text>
+      </svg>
+      <rect class="<%= stage_class(stage) %>" x="110" y="10" width="130" height="30"></rect>
+      <svg x="110" y="10" width="130" height="30">
+        <text x="50%" y="50%" class="<%= stage_class(stage) <> "-bg" %>">
+          <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
+        </text>
+      </svg>
+
+      <rect class="card" x="80" y="40" width="160" height="200" z-index="99"></rect>
+      <svg x="80" y="40" width="160" height="200">
+        <text x="50%" y="15%" class="card-bg-title">
+          <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
+        </text>
+        <text class="card-desc" x="50%" y="30%">
+          <%= for {line, idx} <- Enum.with_index(String.split(Gettext.dgettext(TsWeb.Gettext, "card", title <> "_desc"), "\n")) do %>
+            <tspan  x="50%" y="<%= 6 * idx + 30 %>%"><%= line %></tspan>
+          <% end %>
+        </text>
+        <%= if is_asterisk do %>
+          <text class="remove-desc" x="50%" y="90%"><%= gettext("remove_desc") %></text>
+        <% end %>
+      </svg>
+    </svg>
+  </svg>
+<% end %>
+
 <!-- Cards -->
 <%= for {card, idx} <- Enum.with_index(@game.player_cards) do %>
   <% %{title: title, belongs_to: belongs_to, stage: stage, op: op, is_asterisk: is_asterisk} = Map.get(Ts.Game.Card.cards, card) %>
@@ -23,8 +77,35 @@
       </text>
     </svg>
 
-    <rect class="desc" x="900" y="450" width="160" height="200">
-    </rect>
+    <svg class="desc">
+      <rect class="<%= op_class(belongs_to) %>" x="900" y="420" width="30" height="30"></rect>
+      <svg x="900" y="420" width="30" height="30">
+        <text x="50%" y="50%" class="<%= op_class(belongs_to) %>">
+          <%= op %>
+        </text>
+      </svg>
+      <rect class="<%= stage_class(stage) %>" x="930" y="420" width="130" height="30"></rect>
+      <svg x="930" y="420" width="130" height="30">
+        <text x="50%" y="50%" class="<%= stage_class(stage) <> "-bg" %>">
+          <%= Gettext.dgettext(TsWeb.Gettext, "card", stage) %>
+        </text>
+      </svg>
+
+      <rect class="card" x="900" y="450" width="160" height="200" z-index="99"></rect>
+      <svg x="900" y="450" width="160" height="200">
+        <text x="50%" y="15%" class="card-bg-title">
+          <%= Gettext.dgettext(TsWeb.Gettext, "card", title) %> <%= if is_asterisk, do: "*", else: "" %>
+        </text>
+        <text class="card-desc" x="50%" y="30%">
+          <%= for {line, idx} <- Enum.with_index(String.split(Gettext.dgettext(TsWeb.Gettext, "card", title <> "_desc"), "\n")) do %>
+            <tspan  x="50%" y="<%= 6 * idx + 30 %>%"><%= line %></tspan>
+          <% end %>
+        </text>
+        <%= if is_asterisk do %>
+          <text class="remove-desc" x="50%" y="90%"><%= gettext("remove_desc") %></text>
+        <% end %>
+      </svg>
+    </svg>
   </svg>
 <% end %>
 <!-- Action Area -->
@@ -47,9 +128,9 @@
 <%= case @game.status do %>
   <% :perform_headline_phase_1 -> %>
     <text x="760" y="620" class="info">
-      USA: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.usa) %>(<%= Map.get(Card.cards, @game.memo.usa).op %>)
+      <%= gettext("usa") %>: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.usa) %>(<%= Map.get(Card.cards, @game.memo.usa).op %>)
 
-      USSR: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.ussr) %>(<%= Map.get(Card.cards, @game.memo.ussr).op %>)
+      <%= gettext("ussr") %>: <%= Gettext.dgettext(TsWeb.Gettext, "card", @game.memo.ussr) %>(<%= Map.get(Card.cards, @game.memo.ussr).op %>)
     </text>
   <% _ -> %>
 <% end %>

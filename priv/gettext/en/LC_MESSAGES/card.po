@@ -5,43 +5,43 @@ msgid "duck_and_cover"
 msgstr "Duck and Cover"
 
 msgid "duck_and_cover_desc"
-msgstr "duck_and_cover_desc"
+msgstr "Degrade DEFCON one level.\n Then US players earns VPs equal to\n5 minus current DEFCON level."
 
 msgid "five_years_plan"
 msgstr "Five Years Plan"
 
 msgid "five_years_plan_desc"
-msgstr "five_years_plan_desc"
+msgstr "USSR player must randomly discard\none card. If the card is a US associated\nEvent, the Event occurs immediately.\nIf the card is a USSR asscoicated Event\nor an Event applicable to both players,\nthen the card must be discarded\nwithout triggering the Event."
 
 msgid "socialist_governments"
 msgstr "Socialist Governments"
 
 msgid "socialist_governments_desc"
-msgstr "socialist_governments_desc"
+msgstr "Unplayable as an event if \"The Iron Lady\"\n is in effect.\nRemove US Influence in Western\nEurope by a total of 3 Influence\npoints, removing on more than 2\nper country."
 
 msgid "fidel"
 msgstr "Fidel"
 
 msgid "fidel_desc"
-msgstr "fidel_desc"
+msgstr "Remove all US Influence in Cuba.\nUSSR gains sufficient Influence in\nCuba for Control."
 
 msgid "vietnam_revolts"
 msgstr "Vietnam Revolts"
 
 msgid "vietnam_revolts_desc"
-msgstr "vietnam_revolts_desc"
+msgstr "Add 2 USSR influence in Vietnam.\nFor the remainder of the turn, the\nSoviet player may add 1 Operations\npoint to any card that uses all\npoints to Southeast Asia."
 
 msgid "blockade"
 msgstr "Blockade"
 
 msgid "blockade_desc"
-msgstr "blockade_desc"
+msgstr "Unless US Player immediately\ndiscard a '3' or more value\nOperations card, eliminate all US\nInfluence in West Germany."
 
 msgid "korean_war"
 msgstr "Korean War"
 
 msgid "korean_war_desc"
-msgstr "korean_war_desc"
+msgstr "North Korea invades South Korea.\nRoll one die and sbustract 1 for every\nUS Controlled country adjacent to\nSouth Korea. USSR Victory on\nmodified die roll 4-6. USSR adds 2\nto Military Ops Track.\nEffect of Victory: USSR gains 2 VP\nand replace all US influence in\nSouth Korea with USSR Influence."
 
 msgid "romanian_abdication"
 msgstr "Romanian Abdication"
@@ -77,7 +77,7 @@ msgid "de_gaulle_leads_france"
 msgstr "De Gaulle Leads France"
 
 msgid "de_gaulle_leads_france_desc"
-msgstr "de_gaulle_leads_france_desc"
+msgstr "Remove 2 US Influence in France,\n add 1 USSR Influence.\n Cancels effects of NATO for France."
 
 msgid "caputred_nazi_scientist"
 msgstr "Caputred Nazi Scientist"
@@ -99,3 +99,6 @@ msgstr "olympic_games_desc"
 
 msgid "marshall_plan"
 msgstr "Marshall Plan"
+
+msgid "marshall_plan_desc"
+msgstr "Allows play of NATO.\nAdd one US Influence in each of\nseven non-USSR controlled\nWestern European countries."

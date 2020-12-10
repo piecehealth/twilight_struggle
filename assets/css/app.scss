@@ -161,17 +161,37 @@ svg#gameBoard {
     font-size: 0.5em;
   }
 
+  text.card-stage-early-bg {
+    fill: rgb(246, 254, 246);
+    font-size: 0.7em;
+  }
+
   text.card-title {
     font-size: 0.4em;
   }
+
+  text.card-desc {
+    font-size: 0.5em;
+  }
+
+  text.remove-desc {
+    font-size: 0.5em;
+    fill: rgb(225, 93, 123);
+    font-style: italic;
+  }
+
 
   text.bold-text {
     font-weight: bolder;
   }
 
+  text.card-bg-title {
+    font-size: 0.7em;
+    font-weight: bolder;
+  }
+
   .desc {
     display: none;
-    fill: rgb(227, 245, 255);
   }
 
   .card:hover + .desc{

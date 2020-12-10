@@ -1,0 +1,8 @@
+msgid "early"
+msgstr "冷战早期"
+
+msgid "marshall_plan"
+msgstr "马歇尔计划"
+
+msgid "marshall_plan_desc"
+msgstr "在任意7个未被苏联控制的西欧国家各\n增加1点美国影响力。\n允许北大西洋公约组织\n作为事件打出。"

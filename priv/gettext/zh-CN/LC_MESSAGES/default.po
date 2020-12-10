@@ -33,3 +33,36 @@ msgstr "美国"
 
 msgid "ussr"
 msgstr "苏联"
+
+msgid "choose_side"
+msgstr "选择"
+
+msgid "undo"
+msgstr "撤销"
+
+msgid "commit"
+msgstr "提交"
+
+msgid "ussr_setup"
+msgstr "苏联玩家在东欧放置6点影响力。"
+
+msgid "usa_setup"
+msgstr "美国玩家在西欧放置7点影响力。"
+
+msgid "headline_phase"
+msgstr "头条阶段"
+
+msgid "play_headline_card"
+msgstr "出牌"
+
+msgid "perform_headline_phase_1"
+msgstr "执行第一个头条事件。"
+
+msgid "perform_headline_phase_2"
+msgstr "执行第二个头条事件。"
+
+msgid "implement_event"
+msgstr "%{side}玩家执行事件：%{event}"
+
+msgid "remove_desc"
+msgstr "作为事件使用后，移出游戏。"

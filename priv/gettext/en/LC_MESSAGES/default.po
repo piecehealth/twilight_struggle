@@ -56,10 +56,13 @@ msgid "play_headline_card"
 msgstr "Play Card"
 
 msgid "perform_headline_phase_1"
-msgstr "Perform the first headline event."
+msgstr "Implement the first headline event."
 
 msgid "perform_headline_phase_2"
-msgstr "Perform the second headline event."
+msgstr "Implement the second headline event."
 
 msgid "implement_event"
 msgstr "%{side} player implements event: %{event}"
+
+msgid "remove_desc"
+msgstr "Remove from play if used as an event."
