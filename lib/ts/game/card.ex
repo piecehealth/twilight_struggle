@@ -192,4 +192,42 @@ defmodule Ts.Game.Card do
     |> Enum.map(&Map.get(&1, :title))
     |> Enum.shuffle()
   end
+
+  def move_to_next_status(game = %{current_card: current_card, current_player: [current_player]}) do
+    case game.status do
+      :perform_headline_phase_1 ->
+        next_card_id = Map.values(game.memo) |> List.delete(current_card) |> Enum.at(0)
+
+        next_card = Map.get(@cards, next_card_id)
+
+        next_player =
+          if next_card.belongs_to == @neutral do
+            if current_player == :usa, do: :ussr, else: :usa
+          else
+            next_card.belongs_to
+          end
+
+        Map.merge(game, %{
+          status: :perform_headline_phase_2,
+          current_player: [next_player],
+          current_card: next_card_id
+        })
+
+        apply(next_card.event, :implement, [game])
+
+      :perform_headline_phase_2 ->
+        Map.merge(game, %{
+          status: :action_round,
+          current_player: [:ussr],
+          current_card: nil
+        })
+
+      :action_round ->
+        # TODO
+        game
+
+      _ ->
+        game
+    end
+  end
 end

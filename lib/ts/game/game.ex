@@ -85,6 +85,36 @@ defmodule Ts.Game.Game do
     })
   end
 
+  def commit_infl_changes_for_card(game = %{current_card: current_card}, changes) do
+    [current_player] = game.current_player
+
+    game =
+      cond do
+        current_player == :usa ->
+          Enum.reduce(changes, game, fn {country, infl}, game ->
+            {usa_influence, ussr_influence} = Map.get(game.countries, country)
+            put_in(game.countries[country], {usa_influence + infl, ussr_influence})
+          end)
+
+        current_player == :ussr ->
+          Enum.reduce(changes, game, fn {country, infl}, game ->
+            {usa_influence, ussr_influence} = Map.get(game.countries, country)
+            put_in(game.countries[country], {usa_influence, ussr_influence + infl})
+          end)
+
+        true ->
+          game
+      end
+
+    card_event = Map.get(Card.cards(), current_card).event
+
+    note = (Atom.to_string(current_player) <> "_put_infl") |> String.to_atom()
+
+    Map.put(game, :logs, [{note, changes} | game.logs])
+
+    apply(card_event, :commited_infl_changes, [game])
+  end
+
   def play_headline_card(%Ts.Game.Game{memo: nil} = game, side, card)
       when side in [:usa, :ussr] do
     Map.put(game, :memo, Map.put(%{}, side, card))

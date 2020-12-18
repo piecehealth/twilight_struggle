@@ -181,25 +181,24 @@ defmodule Ts.Game.View do
   end
 
   def commit(room_id, game, _) do
+    changes =
+      Enum.reduce(game.influence_stack, %{}, fn {country, _}, acc ->
+        Map.update(acc, country, 1, &(&1 + 1))
+      end)
+
     case game.status do
       :ussr_setup ->
-        changes =
-          Enum.reduce(game.influence_stack, %{}, fn {country, _}, acc ->
-            Map.update(acc, country, 1, &(&1 + 1))
-          end)
-
         Room.perform_game_update(room_id, :ussr_setup_done, [changes])
 
       :usa_setup ->
-        changes =
-          Enum.reduce(game.influence_stack, %{}, fn {country, _}, acc ->
-            Map.update(acc, country, 1, &(&1 + 1))
-          end)
-
         Room.perform_game_update(room_id, :usa_setup_done, [changes])
 
       _ ->
-        nil
+        if game.current_card do
+          Room.perform_game_update(room_id, :commit_infl_changes_for_card, [changes])
+        else
+          nil
+        end
     end
   end
 
