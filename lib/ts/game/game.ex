@@ -164,4 +164,9 @@ defmodule Ts.Game.Game do
       put_in(game.memo[side], card)
     end
   end
+
+  def perform_card_action(game = %{current_card: current_card}, side, action) do
+    card_event = Map.get(Card.cards(), current_card).event
+    apply(card_event, action, [game, side])
+  end
 end

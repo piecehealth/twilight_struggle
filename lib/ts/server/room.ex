@@ -41,6 +41,11 @@ defmodule Ts.Server.Room do
     notify_room_updates(room, game)
   end
 
+  def perform_card_action(room_id, side, action) do
+    {room, game} = GenServer.call(get_pid(room_id), {:perform_card_action, side, action})
+    notify_room_updates(room, game)
+  end
+
   def host?(room, user_id) do
     room.host_id == user_id
   end
@@ -118,6 +123,12 @@ defmodule Ts.Server.Room do
   @impl true
   def handle_call({:perform_game_update, action, args}, _from, {room, game}) do
     game = apply(Game, action, [game] ++ args)
+    {:reply, {room, game}, {room, game}}
+  end
+
+  @impl true
+  def handle_call({:perform_card_action, side, action}, _from, {room, game}) do
+    game = apply(Game, :perform_card_action, [game, side, action])
     {:reply, {room, game}, {room, game}}
   end
 

@@ -4,8 +4,9 @@ defmodule TsWeb.GameLive do
   alias Ts.Server.Room
   alias Ts.Game.View
 
-  @game_actoins MapSet.new(["commit", "play_headline_card"])
+  @game_actions MapSet.new(["commit", "play_headline_card"])
   @view_actions MapSet.new(["undo"])
+  @card_actions MapSet.new(["skip"])
 
   @impl true
   def mount(%{"id" => room_id}, session, socket) do
@@ -94,8 +95,13 @@ defmodule TsWeb.GameLive do
         game = apply(View, String.to_atom(action), [game, side])
         {:noreply, assign(socket, game: game)}
 
-      action in @game_actoins ->
+      action in @game_actions ->
         apply(View, String.to_atom(action), [room.room_id, game, side])
+        # game will be updated by `handle_info`
+        {:noreply, socket}
+
+      action in @card_actions ->
+        apply(View, :perform_card_action, [room.room_id, String.to_atom(action), side])
         # game will be updated by `handle_info`
         {:noreply, socket}
 

@@ -206,6 +206,10 @@ defmodule Ts.Game.View do
     Room.perform_game_update(room_id, :play_headline_card, [side, game.selected_card])
   end
 
+  def perform_card_action(room_id, action, side) do
+    Room.perform_card_action(room_id, side, action)
+  end
+
   defp sorted_cards(game, side) when side in [:usa, :ussr] do
     {cards, order} =
       if side == :usa do
@@ -271,9 +275,11 @@ defmodule Ts.Game.View do
         {west_europe_countries, 7, 7}
 
       _ ->
-        case game.current_card do
-          "marshall_plan" -> {west_europe_countries, 7, 1}
-          _ -> {@empty_set, 0, 0}
+        if game.current_card do
+          card_event = Map.get(Card.cards(), game.current_card).event
+          card_event.avaliable_countries(game)
+        else
+          {@empty_set, 0, 0}
         end
     end
   end
@@ -292,7 +298,20 @@ defmodule Ts.Game.View do
         end
 
       _ ->
-        []
+        if game.current_card do
+          card_event = Map.get(Card.cards(), game.current_card).event
+          {usa_actions, ussr_actions} = card_event.get_user_actions(game)
+
+          [current_player] = game.current_player
+
+          if current_player == side do
+            if side == :usa, do: usa_actions, else: ussr_actions
+          else
+            []
+          end
+        else
+          []
+        end
     end
   end
 

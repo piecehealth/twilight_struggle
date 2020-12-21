@@ -1,4 +1,8 @@
 defmodule Ts.Game.Card do
+  @callback avaliable_countries(map()) :: {MapSet.t(), integer(), integer()}
+  @callback implement(map()) :: map()
+  @callback get_user_actions(map()) :: {list(), list()}
+
   @early "early"
   @mid "mid"
   @late "late"
@@ -204,14 +208,15 @@ defmodule Ts.Game.Card do
           if next_card.belongs_to == @neutral do
             if current_player == :usa, do: :ussr, else: :usa
           else
-            next_card.belongs_to
+            String.to_atom(next_card.belongs_to)
           end
 
-        Map.merge(game, %{
-          status: :perform_headline_phase_2,
-          current_player: [next_player],
-          current_card: next_card_id
-        })
+        game =
+          Map.merge(game, %{
+            status: :perform_headline_phase_2,
+            current_player: [next_player],
+            current_card: next_card_id
+          })
 
         apply(next_card.event, :implement, [game])
 
